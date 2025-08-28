@@ -50,7 +50,11 @@
               </div>
             </div>
 
-            <div id="anon">
+            <div id="anon" class="card">
+              <div class="card__header">
+                <h3>Sign in</h3>
+                <span class="muted">Choose a method</span>
+              </div>
               <div class="tabs">
                 <button class="tab is-active" data-tab="email" data-i18n="auth.emailTab">Email</button>
                 <button class="tab" data-tab="google" data-i18n="auth.googleTab">Google</button>
@@ -59,7 +63,7 @@
                 <form id="emailAuth" class="form">
                   <label>
                     <span data-i18n="auth.email">Email</span>
-                    <input type="email" id="email" class="input" required />
+                    <input type="email" id="email" class="input" required inputmode="email" autocomplete="email" dir="ltr" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" />
                   </label>
                   <label>
                     <span data-i18n="auth.password">Password</span>
@@ -69,13 +73,16 @@
                     <button type="submit" class="btn" data-action="signin" data-i18n="auth.signIn">Sign In</button>
                     <button type="button" class="btn btn--ghost" id="register" data-i18n="auth.register">Register</button>
                   </div>
+                  <div id="authState" class="muted"></div>
                 </form>
               </div>
               <div class="panel" data-panel="google">
+                <div class="form">
                 <button id="googleSignIn" class="btn btn--icon">
                   <span class="icon">🔐</span>
                   <span data-i18n="auth.signInWithGoogle">Sign in with Google</span>
                 </button>
+                </div>
               </div>
             </div>
           </div>

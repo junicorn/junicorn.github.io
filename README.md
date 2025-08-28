@@ -32,6 +32,13 @@ This repository hosts a static jobs site for junior developers. Employers submit
 ### GitHub Action Secrets
 - `FIREBASE_SERVICE_ACCOUNT` – The full service account JSON (stringified)
 - Optional: `FIREBASE_PROJECT_ID` – Overrides project from the service account JSON
+ 
+### Realtime Database Rules
+If you are not using Realtime Database, lock it entirely. Import `database.rules.json` with:
+
+```
+firebase deploy --only database
+```
 
 ### Firestore Data Model (collection: `jobs`)
 ```
