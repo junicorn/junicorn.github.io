@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" rx="24" fill="#0f1320"/>
+  <g opacity="0.9">
+    <circle cx="120" cy="120" r="80" fill="url(#g)" opacity="0.4"/>
+    <circle cx="360" cy="220" r="120" fill="url(#g)" opacity="0.25"/>
+    <circle cx="520" cy="100" r="60" fill="url(#g)" opacity="0.35"/>
+  </g>
+  <g fill="#11151f" stroke="#1e2638" stroke-width="2">
+    <rect x="70" y="70" width="220" height="120" rx="12"/>
+    <rect x="310" y="170" width="220" height="120" rx="12"/>
+  </g>
+  <g fill="#e6e9ef" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700">
+    <text x="92" y="110">Junior Frontend Dev</text>
+    <text x="332" y="210">Junior Data Analyst</text>
+  </g>
+</svg>

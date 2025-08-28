@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employers – Junicorn Jobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="/">
+        <img class="brand__logo" src="assets/logo.svg" alt="Junicorn Jobs" />
+        <span class="brand__name">Junicorn Jobs</span>
+      </a>
+      <nav class="nav">
+        <a class="nav__link" href="/" data-i18n="nav.home">Home</a>
+        <button class="btn btn--ghost" id="langToggle" aria-label="Toggle language">EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container cols">
+        <div class="col col--sm">
+          <h1 data-i18n="employers.title">Employer Portal</h1>
+          <p class="muted" data-i18n="employers.subtitle">Sign in and publish junior-friendly jobs. Free and fast.</p>
+
+          <div class="notice warning" role="alert">
+            <strong data-i18n="employers.warningTitle">Important</strong>
+            <p data-i18n="employers.warningBody">All submissions are automatically scanned by AI for spam, malicious links, or harmful content. Offenders may face removal and legal action. The service is free for the public good—please post responsibly.</p>
+          </div>
+
+          <div id="auth">
+            <div id="authed" class="hidden">
+              <div class="card">
+                <div class="card__header">
+                  <div class="avatar">👤</div>
+                  <div>
+                    <div id="userEmail" class="strong"></div>
+                    <div class="muted" data-i18n="employers.signedIn">Signed in</div>
+                  </div>
+                  <button id="signOut" class="btn btn--ghost" data-i18n="auth.signOut">Sign out</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="anon">
+              <div class="tabs">
+                <button class="tab is-active" data-tab="email" data-i18n="auth.emailTab">Email</button>
+                <button class="tab" data-tab="google" data-i18n="auth.googleTab">Google</button>
+              </div>
+              <div class="panel is-active" data-panel="email">
+                <form id="emailAuth" class="form">
+                  <label>
+                    <span data-i18n="auth.email">Email</span>
+                    <input type="email" id="email" class="input" required />
+                  </label>
+                  <label>
+                    <span data-i18n="auth.password">Password</span>
+                    <input type="password" id="password" class="input" required minlength="6" />
+                  </label>
+                  <div class="row">
+                    <button type="submit" class="btn" data-action="signin" data-i18n="auth.signIn">Sign In</button>
+                    <button type="button" class="btn btn--ghost" id="register" data-i18n="auth.register">Register</button>
+                  </div>
+                </form>
+              </div>
+              <div class="panel" data-panel="google">
+                <button id="googleSignIn" class="btn btn--icon">
+                  <span class="icon">🔐</span>
+                  <span data-i18n="auth.signInWithGoogle">Sign in with Google</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col col--lg">
+          <div class="card">
+            <div class="card__header">
+              <h2 data-i18n="jobForm.title">Post a Job</h2>
+              <span class="muted" data-i18n="jobForm.subtitle">Fields marked * are required. Jobs are reviewed.</span>
+            </div>
+            <form id="jobForm" class="form" novalidate>
+              <div class="grid">
+                <label>
+                  <span data-i18n="jobForm.position">Position Title *</span>
+                  <input id="title" class="input" required maxlength="100" />
+                </label>
+                <label>
+                  <span data-i18n="jobForm.company">Company *</span>
+                  <input id="company" class="input" required maxlength="100" />
+                </label>
+                <label>
+                  <span data-i18n="jobForm.location">Location *</span>
+                  <input id="location" class="input" required maxlength="80" placeholder="City, Country or Remote" />
+                </label>
+                <label>
+                  <span data-i18n="jobForm.workMode">Work Mode *</span>
+                  <select id="workMode" class="select" required>
+                    <option>On-site</option>
+                    <option>Hybrid</option>
+                    <option>Remote</option>
+                  </select>
+                </label>
+                <label>
+                  <span data-i18n="jobForm.type">Employment Type *</span>
+                  <select id="employmentType" class="select" required>
+                    <option>Internship</option>
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                    <option>Freelance</option>
+                  </select>
+                </label>
+                <label class="grid--full">
+                  <span data-i18n="jobForm.description">Short Description *</span>
+                  <textarea id="description" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves"></textarea>
+                </label>
+                <label>
+                  <span data-i18n="jobForm.applyEmail">Apply Email *</span>
+                  <input id="applyEmail" type="email" class="input" required />
+                </label>
+                <label>
+                  <span data-i18n="jobForm.applyUrl">Apply URL</span>
+                  <input id="applyUrl" type="url" class="input" placeholder="https://..." />
+                </label>
+                <label class="grid--full">
+                  <span data-i18n="jobForm.tags">Tags (comma separated)</span>
+                  <input id="tags" class="input" placeholder="JavaScript, Vue, QA, Data" />
+                </label>
+              </div>
+              <div class="row">
+                <button class="btn" id="submitJob" type="submit" data-i18n="jobForm.submit">Submit for review</button>
+                <div id="formState" class="muted"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <span class="brand__name">Junicorn Jobs</span>
+        <span class="muted">© <span id="year"></span></span>
+      </div>
+      <a class="muted" href="/" data-i18n="footer.browse">Browse jobs</a>
+    </div>
+  </footer>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/employer.js"></script>
+</body>
+</html>
+
