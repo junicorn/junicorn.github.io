@@ -162,14 +162,7 @@
         document.querySelectorAll('.language-toggle__btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const lang = this.dataset.lang;
-            
-            // Update active state
-            document.querySelectorAll('.language-toggle__btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
             window.JI18N.setLang(lang);
-            document.documentElement.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', lang);
           });
         });
         

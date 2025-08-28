@@ -333,12 +333,14 @@
   }
 
   function apply(lang) {
+    console.log('Applying translations for language:', lang);
     const dict = translations[lang] || translations.en;
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
     
     // Apply translations to elements with data-i18n
     const nodes = document.querySelectorAll('[data-i18n]');
+    console.log('Found', nodes.length, 'elements with data-i18n');
     nodes.forEach(node => {
       const key = node.getAttribute('data-i18n');
       if (dict[key]) {
@@ -352,6 +354,7 @@
     
     // Apply translations to placeholders
     const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+    console.log('Found', placeholders.length, 'elements with data-i18n-placeholder');
     placeholders.forEach(node => {
       const key = node.getAttribute('data-i18n-placeholder');
       if (dict[key]) node.setAttribute('placeholder', dict[key]);
@@ -359,26 +362,38 @@
     
     // Apply translations to aria-labels
     const ariaLabels = document.querySelectorAll('[data-i18n-aria-label]');
+    console.log('Found', ariaLabels.length, 'elements with data-i18n-aria-label');
     ariaLabels.forEach(node => {
       const key = node.getAttribute('data-i18n-aria-label');
       if (dict[key]) node.setAttribute('aria-label', dict[key]);
     });
     
-    // Update language toggle button
-    const toggle = document.getElementById('langToggle');
-    if (toggle) toggle.textContent = lang.toUpperCase();
+    console.log('Translation application completed');
   }
 
   const api = {
     init() {
       const lang = getSavedLang();
-      apply(lang);
+      this.setLang(lang);
     },
     toggle() {
-      const current = document.documentElement.lang === 'he' ? 'he' : 'en';
+      const current = this.getLang();
       const next = current === 'he' ? 'en' : 'he';
-      localStorage.setItem(storageKey, next);
-      apply(next);
+      this.setLang(next);
+    },
+    setLang(lang) {
+      console.log('Setting language to:', lang);
+      localStorage.setItem(storageKey, lang);
+      apply(lang);
+      
+      // Update language toggle buttons
+      document.querySelectorAll('.language-toggle__btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+          btn.classList.add('active');
+          console.log('Activated button for language:', lang);
+        }
+      });
     },
     getLang() {
       return document.documentElement.lang === 'he' ? 'he' : 'en';
