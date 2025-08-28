@@ -76,12 +76,21 @@
     const googleBtn = document.getElementById('googleSignIn');
     const signOutBtn = document.getElementById('signOut');
 
+    function sanitizeEmail(raw) {
+      if (!raw) return '';
+      // Remove common invisible/RTL marks and spaces
+      return raw
+        .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '')
+        .replace(/\s+/g, '')
+        .toLowerCase();
+    }
+
     emailForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById('email');
       const passInput = document.getElementById('password');
       const state = document.getElementById('authState');
-      const email = emailInput.value.trim();
+      const email = sanitizeEmail(emailInput.value);
       const password = passInput.value;
       state.textContent = '';
       const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
@@ -104,7 +113,7 @@
     });
     registerBtn.addEventListener('click', async () => {
       const state = document.getElementById('authState');
-      const email = document.getElementById('email').value.trim();
+      const email = sanitizeEmail(document.getElementById('email').value);
       const password = document.getElementById('password').value;
       state.textContent = '';
       const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
