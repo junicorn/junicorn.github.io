@@ -50,46 +50,56 @@
               </div>
             </div>
 
-            <div id="anon" class="card">
-              <div class="card__header">
-                <h3>Sign in</h3>
-                <span class="muted">Choose a method</span>
-              </div>
-              <div class="tabs">
-                <button class="tab is-active" data-tab="email" data-i18n="auth.emailTab">Email</button>
-                <button class="tab" data-tab="google" data-i18n="auth.googleTab">Google</button>
-              </div>
-              <div class="panel is-active" data-panel="email">
-                <form id="emailAuth" class="form">
+            <div id="anon" class="auth-grid">
+              <div class="card">
+                <div class="card__header">
+                  <h3>Sign In</h3>
+                  <span class="muted">Use your account</span>
+                </div>
+                <form id="emailSignInForm" class="form">
                   <label>
-                    <span data-i18n="auth.email">Email</span>
-                    <input type="email" id="email" class="input" required inputmode="email" autocomplete="email" dir="ltr" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" />
+                    <span>Email</span>
+                    <input type="email" id="emailSignIn" class="input" required inputmode="email" autocomplete="email" dir="ltr" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" />
                   </label>
                   <label>
-                    <span data-i18n="auth.password">Password</span>
-                    <input type="password" id="password" class="input" required minlength="6" />
+                    <span>Password</span>
+                    <input type="password" id="passwordSignIn" class="input" required minlength="6" autocomplete="current-password" />
                   </label>
                   <div class="row">
-                    <button type="submit" class="btn" data-action="signin" data-i18n="auth.signIn">Sign In</button>
-                    <button type="button" class="btn btn--ghost" id="register" data-i18n="auth.register">Register</button>
+                    <button type="submit" class="btn">Sign In</button>
+                    <button type="button" class="btn btn--icon" id="googleSignIn"><span class="icon">🔐</span><span>Google</span></button>
                   </div>
-                  <div id="authState" class="muted"></div>
+                  <div id="authStateSignIn" class="muted"></div>
                 </form>
               </div>
-              <div class="panel" data-panel="google">
-                <div class="form">
-                <button id="googleSignIn" class="btn btn--icon">
-                  <span class="icon">🔐</span>
-                  <span data-i18n="auth.signInWithGoogle">Sign in with Google</span>
-                </button>
+
+              <div class="card">
+                <div class="card__header">
+                  <h3>Register</h3>
+                  <span class="muted">Create a new employer account</span>
                 </div>
+                <form id="emailRegisterForm" class="form">
+                  <label>
+                    <span>Email</span>
+                    <input type="email" id="emailRegister" class="input" required inputmode="email" autocomplete="email" dir="ltr" pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" />
+                  </label>
+                  <label>
+                    <span>Password</span>
+                    <input type="password" id="passwordRegister" class="input" required minlength="6" autocomplete="new-password" />
+                  </label>
+                  <div class="row">
+                    <button type="submit" class="btn">Create Account</button>
+                    <button type="button" class="btn btn--icon" id="googleRegister"><span class="icon">✨</span><span>Google</span></button>
+                  </div>
+                  <div id="authStateRegister" class="muted"></div>
+                </form>
               </div>
             </div>
           </div>
         </div>
 
         <div class="col col--lg">
-          <div class="card">
+          <div class="card" id="jobFormCard">
             <div class="card__header">
               <h2 data-i18n="jobForm.title">Post a Job</h2>
               <span class="muted" data-i18n="jobForm.subtitle">Fields marked * are required. Jobs are reviewed.</span>
