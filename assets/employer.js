@@ -50,26 +50,27 @@
     storageBucket: "junicornjobs.firebasestorage.app",
     messagingSenderId: "379742849424",
     appId: "1:379742849424:web:1c1b35d393a5b880714b15",
-    measurementId: "G-MSWKTZF7J0"
+    measurementId: "G-MSWKTZF7J0",
+    databaseURL: "https://junicornjobs-default-rtdb.firebaseio.com"
   };
 
   const script = document.createElement('script');
   script.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js';
   const scriptAuth = document.createElement('script');
   scriptAuth.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js';
-  const scriptFirestore = document.createElement('script');
-  scriptFirestore.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js';
+  const scriptDatabase = document.createElement('script');
+  scriptDatabase.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js';
 
-  scriptFirestore.onload = initFirebase;
+  scriptDatabase.onload = initFirebase;
   document.head.appendChild(script);
   document.head.appendChild(scriptAuth);
-  document.head.appendChild(scriptFirestore);
+  document.head.appendChild(scriptDatabase);
 
-  let auth, db;
+  let auth, database;
   function initFirebase() {
     firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
-    db = firebase.firestore();
+    database = firebase.database();
     auth.onAuthStateChanged(handleAuthState);
     bindAuthUI();
     bindJobForm();
@@ -104,6 +105,16 @@
     element.className = `form-message ${type}`;
   }
 
+  function setLoading(button, loading) {
+    if (loading) {
+      button.disabled = true;
+      button.innerHTML = '<span class="loader__spinner"></span> Loading...';
+    } else {
+      button.disabled = false;
+      button.innerHTML = button.getAttribute('data-original-text') || 'Submit';
+    }
+  }
+
   function bindAuthUI() {
     const signInForm = document.getElementById('emailSignInForm');
     const registerForm = document.getElementById('emailRegisterForm');
@@ -111,6 +122,15 @@
     const googleSignInBtn = document.getElementById('googleSignIn');
     const googleRegisterBtn = document.getElementById('googleRegister');
     const signOutBtn = document.getElementById('signOut');
+
+    // Store original button text
+    const signInBtn = signInForm.querySelector('button[type="submit"]');
+    const registerBtn = registerForm.querySelector('button[type="submit"]');
+    const forgotBtn = forgotForm.querySelector('button[type="submit"]');
+    
+    signInBtn.setAttribute('data-original-text', signInBtn.textContent);
+    registerBtn.setAttribute('data-original-text', registerBtn.textContent);
+    forgotBtn.setAttribute('data-original-text', forgotBtn.textContent);
 
     signInForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -125,6 +145,7 @@
       if (!password || password.length < 6) { showMessage(state, 'Password must be at least 6 characters', 'error'); passInput.focus(); return; }
       
       try {
+        setLoading(signInBtn, true);
         showMessage(state, 'Signing in…', 'info');
         await auth.signInWithEmailAndPassword(email, password);
         showMessage(state, '', '');
@@ -133,9 +154,12 @@
           'auth/invalid-email': 'Invalid email format',
           'auth/user-not-found': 'No account found. Try Register.',
           'auth/wrong-password': 'Incorrect password',
-          'auth/too-many-requests': 'Too many attempts. Try again later.'
+          'auth/too-many-requests': 'Too many attempts. Try again later.',
+          'auth/unauthorized-domain': 'This domain is not authorized. Please contact support.'
         };
         showMessage(state, map[err.code] || err.message || 'Failed to sign in', 'error');
+      } finally {
+        setLoading(signInBtn, false);
       }
     });
 
@@ -152,6 +176,7 @@
       if (password !== confirmPassword) { showMessage(state, 'Passwords do not match', 'error'); return; }
       
       try {
+        setLoading(registerBtn, true);
         showMessage(state, 'Creating account…', 'info');
         await auth.createUserWithEmailAndPassword(email, password);
         showMessage(state, 'Account created successfully!', 'success');
@@ -159,9 +184,12 @@
         const map = {
           'auth/email-already-in-use': 'Email already in use',
           'auth/invalid-email': 'Invalid email format',
-          'auth/weak-password': 'Password too weak'
+          'auth/weak-password': 'Password too weak',
+          'auth/unauthorized-domain': 'This domain is not authorized. Please contact support.'
         };
         showMessage(state, map[err.code] || err.message || 'Failed to register', 'error');
+      } finally {
+        setLoading(registerBtn, false);
       }
     });
 
@@ -174,6 +202,7 @@
       if (!emailOk) { showMessage(state, 'Please enter a valid email', 'error'); return; }
       
       try {
+        setLoading(forgotBtn, true);
         showMessage(state, 'Sending reset link…', 'info');
         await auth.sendPasswordResetEmail(email);
         showMessage(state, 'Reset link sent! Check your email.', 'success');
@@ -181,29 +210,46 @@
       } catch (err) {
         const map = {
           'auth/user-not-found': 'No account found with this email',
-          'auth/invalid-email': 'Invalid email format'
+          'auth/invalid-email': 'Invalid email format',
+          'auth/unauthorized-domain': 'This domain is not authorized. Please contact support.'
         };
         showMessage(state, map[err.code] || err.message || 'Failed to send reset link', 'error');
+      } finally {
+        setLoading(forgotBtn, false);
       }
     });
 
     googleSignInBtn.addEventListener('click', async () => {
       try {
+        setLoading(googleSignInBtn, true);
         const provider = new firebase.auth.GoogleAuthProvider();
         await auth.signInWithPopup(provider);
       } catch (err) {
         const el = document.getElementById('authStateSignIn');
-        showMessage(el, err.message, 'error');
+        const map = {
+          'auth/unauthorized-domain': 'This domain is not authorized. Please contact support.',
+          'auth/popup-closed-by-user': 'Sign-in was cancelled.'
+        };
+        showMessage(el, map[err.code] || err.message, 'error');
+      } finally {
+        setLoading(googleSignInBtn, false);
       }
     });
 
     googleRegisterBtn.addEventListener('click', async () => {
       try {
+        setLoading(googleRegisterBtn, true);
         const provider = new firebase.auth.GoogleAuthProvider();
         await auth.signInWithPopup(provider);
       } catch (err) {
         const el = document.getElementById('authStateRegister');
-        showMessage(el, err.message, 'error');
+        const map = {
+          'auth/unauthorized-domain': 'This domain is not authorized. Please contact support.',
+          'auth/popup-closed-by-user': 'Sign-in was cancelled.'
+        };
+        showMessage(el, map[err.code] || err.message, 'error');
+      } finally {
+        setLoading(googleRegisterBtn, false);
       }
     });
 
@@ -229,9 +275,18 @@
   function bindJobForm() {
     const form = document.getElementById('jobForm');
     const state = document.getElementById('formState');
+    const submitBtn = document.getElementById('submitJob');
+    
+    // Store original button text
+    submitBtn.setAttribute('data-original-text', submitBtn.textContent);
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!auth.currentUser) { alert('Please sign in first'); return; }
+      if (!auth.currentUser) { 
+        showMessage(state, 'Please sign in first', 'error'); 
+        return; 
+      }
+      
       const payload = {
         title: document.getElementById('title').value.trim(),
         company: document.getElementById('company').value.trim(),
@@ -242,20 +297,33 @@
         applyEmail: document.getElementById('applyEmail').value.trim(),
         applyUrl: document.getElementById('applyUrl').value.trim(),
         tags: document.getElementById('tags').value.split(',').map(s => s.trim()).filter(Boolean),
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         status: 'pending',
-        ownerUid: auth.currentUser.uid
+        ownerUid: auth.currentUser.uid,
+        ownerEmail: auth.currentUser.email
       };
+      
       const err = validateJob(payload);
-      if (err) { state.textContent = err; state.style.color = '#ef4444'; return; }
-      state.textContent = 'Submitting…'; state.style.color = '#94a3b8';
+      if (err) { 
+        showMessage(state, err, 'error'); 
+        return; 
+      }
+      
       try {
-        await db.collection('jobs').add(payload);
-        state.textContent = 'Submitted for review. Thank you!'; state.style.color = '#22c55e';
+        setLoading(submitBtn, true);
+        showMessage(state, 'Submitting job…', 'info');
+        
+        // Save to Realtime Database
+        const jobRef = database.ref('jobs').push();
+        await jobRef.set(payload);
+        
+        showMessage(state, 'Job submitted successfully! It will be reviewed shortly.', 'success');
         form.reset();
       } catch (e2) {
-        console.error(e2);
-        state.textContent = e2.message || 'Failed to submit'; state.style.color = '#ef4444';
+        console.error('Job submission error:', e2);
+        showMessage(state, e2.message || 'Failed to submit job. Please try again.', 'error');
+      } finally {
+        setLoading(submitBtn, false);
       }
     });
   }
