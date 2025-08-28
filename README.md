@@ -79,7 +79,8 @@ Create a Firebase project and enable:
     ".read": false,
     ".write": false,
     "jobs": {
-      ".indexOn": ["status"],
+      ".indexOn": ["status", "ownerUid"],
+      ".read": "auth != null",
       "$jobId": {
         ".read": "auth != null && (data.child('ownerUid').val() === auth.uid || auth.token.moderator === true)",
         ".write": "auth != null && ( (!data.exists() && newData.child('ownerUid').val() === auth.uid && newData.child('status').val() === 'pending') || (data.exists() && ( (data.child('ownerUid').val() === auth.uid && data.child('status').val() === 'pending') || auth.token.moderator === true )) )"
@@ -88,6 +89,13 @@ Create a Firebase project and enable:
   }
 }
 ```
+
+**Deploy the rules:**
+```bash
+firebase deploy --only database
+```
+
+**Important:** Make sure to deploy these rules to enable job management functionality.
 
 ### 3. GitHub Secrets
 
