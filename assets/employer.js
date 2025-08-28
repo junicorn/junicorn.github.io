@@ -9,10 +9,40 @@
     langToggle.textContent = window.JI18N.getLang().toUpperCase();
   }
 
-  // Removed tabs; now separate cards for sign-in and register
+  // Auth tabs
+  const authTabs = document.querySelectorAll('.auth-tab');
+  const authPanels = document.querySelectorAll('.auth-panel');
+  authTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const name = tab.getAttribute('data-tab');
+      authTabs.forEach(t => t.classList.toggle('is-active', t === tab));
+      authPanels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-panel') === name));
+    });
+  });
+
+  // Modal handling
+  const forgotModal = document.getElementById('forgotModal');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const closeForgotModal = document.getElementById('closeForgotModal');
+  const forgotPasswordBtn = document.getElementById('forgotPassword');
+
+  function showModal() {
+    forgotModal.classList.remove('hidden');
+    modalBackdrop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function hideModal() {
+    forgotModal.classList.add('hidden');
+    modalBackdrop.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  forgotPasswordBtn.addEventListener('click', showModal);
+  closeForgotModal.addEventListener('click', hideModal);
+  modalBackdrop.addEventListener('click', hideModal);
 
   // Firebase
-  // Firebase Web v9 modular SDK via script import
   const firebaseConfig = {
     apiKey: "AIzaSyAJiCEIR8vsPtm5wE4duinpyKKpYV584fw",
     authDomain: "junicornjobs.firebaseapp.com",
@@ -45,39 +75,42 @@
     bindJobForm();
   }
 
-  const authedEl = document.getElementById('authed');
-  const anonEl = document.getElementById('anon');
+  const authSection = document.getElementById('authSection');
+  const jobSection = document.getElementById('jobSection');
   const userEmailEl = document.getElementById('userEmail');
 
   function handleAuthState(user) {
     if (user) {
-      authedEl.classList.remove('hidden');
-      anonEl.classList.add('hidden');
+      authSection.classList.add('hidden');
+      jobSection.classList.remove('hidden');
       userEmailEl.textContent = user.email || '';
-      toggleJobForm(true);
     } else {
-      authedEl.classList.add('hidden');
-      anonEl.classList.remove('hidden');
+      authSection.classList.remove('hidden');
+      jobSection.classList.add('hidden');
       userEmailEl.textContent = '';
-      toggleJobForm(false);
     }
+  }
+
+  function sanitizeEmail(raw) {
+    if (!raw) return '';
+    return raw
+      .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+  }
+
+  function showMessage(element, message, type = 'info') {
+    element.textContent = message;
+    element.className = `form-message ${type}`;
   }
 
   function bindAuthUI() {
     const signInForm = document.getElementById('emailSignInForm');
     const registerForm = document.getElementById('emailRegisterForm');
+    const forgotForm = document.getElementById('forgotForm');
     const googleSignInBtn = document.getElementById('googleSignIn');
     const googleRegisterBtn = document.getElementById('googleRegister');
     const signOutBtn = document.getElementById('signOut');
-
-    function sanitizeEmail(raw) {
-      if (!raw) return '';
-      // Remove common invisible/RTL marks and spaces
-      return raw
-        .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '')
-        .replace(/\s+/g, '')
-        .toLowerCase();
-    }
 
     signInForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -86,14 +119,15 @@
       const state = document.getElementById('authStateSignIn');
       const email = sanitizeEmail(emailInput.value);
       const password = passInput.value;
-      state.textContent = '';
+      
       const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-      if (!emailOk) { state.textContent = 'Please enter a valid email'; state.style.color = '#ef4444'; emailInput.focus(); return; }
-      if (!password || password.length < 6) { state.textContent = 'Password must be at least 6 characters'; state.style.color = '#ef4444'; passInput.focus(); return; }
+      if (!emailOk) { showMessage(state, 'Please enter a valid email', 'error'); emailInput.focus(); return; }
+      if (!password || password.length < 6) { showMessage(state, 'Password must be at least 6 characters', 'error'); passInput.focus(); return; }
+      
       try {
-        state.textContent = 'Signing in…'; state.style.color = '#94a3b8';
+        showMessage(state, 'Signing in…', 'info');
         await auth.signInWithEmailAndPassword(email, password);
-        state.textContent = '';
+        showMessage(state, '', '');
       } catch (err) {
         const map = {
           'auth/invalid-email': 'Invalid email format',
@@ -101,65 +135,81 @@
           'auth/wrong-password': 'Incorrect password',
           'auth/too-many-requests': 'Too many attempts. Try again later.'
         };
-        state.textContent = map[err.code] || err.message || 'Failed to sign in';
-        state.style.color = '#ef4444';
+        showMessage(state, map[err.code] || err.message || 'Failed to sign in', 'error');
       }
     });
+
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const state = document.getElementById('authStateRegister');
       const email = sanitizeEmail(document.getElementById('emailRegister').value);
       const password = document.getElementById('passwordRegister').value;
-      state.textContent = '';
+      const confirmPassword = document.getElementById('passwordConfirm').value;
+      
       const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-      if (!emailOk) { state.textContent = 'Please enter a valid email'; state.style.color = '#ef4444'; return; }
-      if (!password || password.length < 6) { state.textContent = 'Password must be at least 6 characters'; state.style.color = '#ef4444'; return; }
+      if (!emailOk) { showMessage(state, 'Please enter a valid email', 'error'); return; }
+      if (!password || password.length < 6) { showMessage(state, 'Password must be at least 6 characters', 'error'); return; }
+      if (password !== confirmPassword) { showMessage(state, 'Passwords do not match', 'error'); return; }
+      
       try {
-        state.textContent = 'Creating account…'; state.style.color = '#94a3b8';
+        showMessage(state, 'Creating account…', 'info');
         await auth.createUserWithEmailAndPassword(email, password);
-        state.textContent = 'Account created'; state.style.color = '#22c55e';
+        showMessage(state, 'Account created successfully!', 'success');
       } catch (err) {
         const map = {
           'auth/email-already-in-use': 'Email already in use',
           'auth/invalid-email': 'Invalid email format',
           'auth/weak-password': 'Password too weak'
         };
-        state.textContent = map[err.code] || err.message || 'Failed to register';
-        state.style.color = '#ef4444';
+        showMessage(state, map[err.code] || err.message || 'Failed to register', 'error');
       }
     });
+
+    forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const state = document.getElementById('forgotState');
+      const email = sanitizeEmail(document.getElementById('forgotEmail').value);
+      
+      const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      if (!emailOk) { showMessage(state, 'Please enter a valid email', 'error'); return; }
+      
+      try {
+        showMessage(state, 'Sending reset link…', 'info');
+        await auth.sendPasswordResetEmail(email);
+        showMessage(state, 'Reset link sent! Check your email.', 'success');
+        setTimeout(hideModal, 2000);
+      } catch (err) {
+        const map = {
+          'auth/user-not-found': 'No account found with this email',
+          'auth/invalid-email': 'Invalid email format'
+        };
+        showMessage(state, map[err.code] || err.message || 'Failed to send reset link', 'error');
+      }
+    });
+
     googleSignInBtn.addEventListener('click', async () => {
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         await auth.signInWithPopup(provider);
       } catch (err) {
         const el = document.getElementById('authStateSignIn');
-        el.textContent = err.message;
-        el.style.color = '#ef4444';
+        showMessage(el, err.message, 'error');
       }
     });
+
     googleRegisterBtn.addEventListener('click', async () => {
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         await auth.signInWithPopup(provider);
       } catch (err) {
         const el = document.getElementById('authStateRegister');
-        el.textContent = err.message;
-        el.style.color = '#ef4444';
+        showMessage(el, err.message, 'error');
       }
     });
+
     signOutBtn.addEventListener('click', async () => {
       await auth.signOut();
     });
-  }
-
-  function toggleJobForm(enabled) {
-    const card = document.getElementById('jobFormCard');
-    const form = document.getElementById('jobForm');
-    if (!card || !form) return;
-    const controls = form.querySelectorAll('input, select, textarea, button');
-    controls.forEach(el => el.disabled = !enabled);
-    card.classList.toggle('is-disabled', !enabled);
   }
 
   function validateJob(payload) {
@@ -170,7 +220,6 @@
     const emailOk = /.+@.+\..+/.test(payload.applyEmail);
     if (!emailOk) return 'Invalid apply email';
     if (payload.applyUrl && !/^https?:\/\//i.test(payload.applyUrl)) return 'Invalid apply URL';
-    // naive anti-spam: disallow <script> and some bad keywords
     const desc = payload.description.toLowerCase();
     const banned = ['<script', 'javascript:', 'onerror=', 'onload=', 'virus', 'malware'];
     if (banned.some(b => desc.includes(b))) return 'Description contains disallowed content';
