@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "sample-1",
+    "title": "Junior Frontend Developer",
+    "company": "TechCorp Israel",
+    "location": "Tel Aviv, Israel",
+    "workMode": "Hybrid",
+    "employmentType": "Full-time",
+    "description": "We're looking for a passionate junior frontend developer to join our growing team. You'll work on modern web applications using React, TypeScript, and CSS. This is a great opportunity to learn from experienced developers and contribute to real-world projects. We offer mentorship, flexible hours, and a supportive environment for junior developers.",
+    "applyEmail": "jobs@techcorp.co.il",
+    "applyUrl": "https://techcorp.co.il/careers",
+    "tags": ["React", "TypeScript", "CSS", "JavaScript", "Frontend", "Junior"],
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "status": "approved",
+    "ownerUid": "sample-user",
+    "ownerEmail": "hr@techcorp.co.il"
+  }
+]

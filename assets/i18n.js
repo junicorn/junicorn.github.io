@@ -18,6 +18,9 @@
       'empty': 'No jobs found. Try adjusting filters.',
       'footer.postFree': 'Post a job for free',
       'footer.browse': 'Browse jobs',
+      'job.expand': 'Show more',
+      'job.apply': 'Apply',
+      'job.email': 'Email',
       'employers.title': 'Employer Portal',
       'employers.subtitle': 'Sign in and publish junior-friendly jobs. Free and fast.',
       'employers.warningTitle': 'Important',
@@ -67,6 +70,9 @@
       'empty': 'לא נמצאו משרות. נסו לשנות סינון.',
       'footer.postFree': 'פרסם משרה בחינם',
       'footer.browse': 'עיון במשרות',
+      'job.expand': 'הצג עוד',
+      'job.apply': 'הגש מועמדות',
+      'job.email': 'שלח אימייל',
       'employers.title': 'איזור מעסיקים',
       'employers.subtitle': 'התחברו ופרסמו משרות ידידותיות לג׳וניורים. מהיר וחינמי.',
       'employers.warningTitle': 'חשוב',
@@ -139,6 +145,10 @@
     },
     getLang() {
       return document.documentElement.lang === 'he' ? 'he' : 'en';
+    },
+    apply() {
+      const lang = this.getLang();
+      apply(lang);
     }
   };
 
