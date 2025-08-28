@@ -78,21 +78,50 @@
 
     emailForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      const emailInput = document.getElementById('email');
+      const passInput = document.getElementById('password');
+      const state = document.getElementById('authState');
+      const email = emailInput.value.trim();
+      const password = passInput.value;
+      state.textContent = '';
+      const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      if (!emailOk) { state.textContent = 'Please enter a valid email'; state.style.color = '#ef4444'; emailInput.focus(); return; }
+      if (!password || password.length < 6) { state.textContent = 'Password must be at least 6 characters'; state.style.color = '#ef4444'; passInput.focus(); return; }
       try {
+        state.textContent = 'Signing in…'; state.style.color = '#94a3b8';
         await auth.signInWithEmailAndPassword(email, password);
+        state.textContent = '';
       } catch (err) {
-        alert(err.message);
+        const map = {
+          'auth/invalid-email': 'Invalid email format',
+          'auth/user-not-found': 'No account found. Try Register.',
+          'auth/wrong-password': 'Incorrect password',
+          'auth/too-many-requests': 'Too many attempts. Try again later.'
+        };
+        state.textContent = map[err.code] || err.message || 'Failed to sign in';
+        state.style.color = '#ef4444';
       }
     });
     registerBtn.addEventListener('click', async () => {
+      const state = document.getElementById('authState');
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
+      state.textContent = '';
+      const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      if (!emailOk) { state.textContent = 'Please enter a valid email'; state.style.color = '#ef4444'; return; }
+      if (!password || password.length < 6) { state.textContent = 'Password must be at least 6 characters'; state.style.color = '#ef4444'; return; }
       try {
+        state.textContent = 'Creating account…'; state.style.color = '#94a3b8';
         await auth.createUserWithEmailAndPassword(email, password);
+        state.textContent = 'Account created'; state.style.color = '#22c55e';
       } catch (err) {
-        alert(err.message);
+        const map = {
+          'auth/email-already-in-use': 'Email already in use',
+          'auth/invalid-email': 'Invalid email format',
+          'auth/weak-password': 'Password too weak'
+        };
+        state.textContent = map[err.code] || err.message || 'Failed to register';
+        state.style.color = '#ef4444';
       }
     });
     googleBtn.addEventListener('click', async () => {
