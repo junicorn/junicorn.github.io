@@ -44,6 +44,13 @@
       'filters.anyType': 'Any Type',
       'filters.clear': 'Clear',
       
+      // Placeholders
+      'placeholders.searchJobs': 'Search jobs...',
+      'placeholders.location': 'City, Country or Remote',
+      'placeholders.description': 'What you\'ll do, must-have skills, nice-to-haves',
+      'placeholders.applyUrl': 'https://...',
+      'placeholders.tags': 'JavaScript, Vue, QA, Data',
+      
       // Job Details
       'job.apply': 'Apply for this position',
       'job.sendEmail': 'Send Email',
@@ -130,7 +137,29 @@
       // Common
       'common.cancel': 'Cancel',
       'common.confirm': 'Confirm',
-      'common.delete': 'Delete'
+      'common.delete': 'Delete',
+      
+      // Page Titles
+      'pageTitle.home': 'Junicorn Jobs – Junior Tech Jobs',
+      'pageTitle.jobs': 'Job Listings - Junicorn Jobs',
+      'pageTitle.employer': 'Employers – Junicorn Jobs',
+      
+      // Select Options
+      'select.onsite': 'On-site',
+      'select.hybrid': 'Hybrid',
+      'select.remote': 'Remote',
+      'select.internship': 'Internship',
+      'select.fullTime': 'Full-time',
+      'select.partTime': 'Part-time',
+      'select.contract': 'Contract',
+      'select.freelance': 'Freelance',
+      
+      // Static Text
+      'static.jobsCount': 'jobs',
+      'static.closeModal': 'Close modal',
+      'static.toggleLanguage': 'Toggle language',
+      'static.toggleTheme': 'Toggle theme',
+      'static.copyright': '©'
     },
     he: {
       // Navigation
@@ -175,6 +204,13 @@
       'filters.hybrid': 'היברידי',
       'filters.anyType': 'כל סוג',
       'filters.clear': 'נקה',
+      
+      // Placeholders
+      'placeholders.searchJobs': 'חיפוש משרות...',
+      'placeholders.location': 'עיר, מדינה או מרחוק',
+      'placeholders.description': 'מה תעשה, חובה לדעת, נעזרות נעימות',
+      'placeholders.applyUrl': 'https://...',
+      'placeholders.tags': 'ג\'אווהסקריפט, וויואו, קיי איי, נושאי נתונים',
       
       // Job Details
       'job.apply': 'הגש מועמדות למשרה זו',
@@ -262,7 +298,29 @@
       // Common
       'common.cancel': 'ביטול',
       'common.confirm': 'אישור',
-      'common.delete': 'מחק'
+      'common.delete': 'מחק',
+      
+      // Page Titles
+      'pageTitle.home': 'Junicorn Jobs – Junior Tech Jobs',
+      'pageTitle.jobs': 'Job Listings - Junicorn Jobs',
+      'pageTitle.employer': 'Employers – Junicorn Jobs',
+      
+      // Select Options
+      'select.onsite': 'במשרד',
+      'select.hybrid': 'היברידי',
+      'select.remote': 'מרחוק',
+      'select.internship': 'התמחות',
+      'select.fullTime': 'משרה מלאה',
+      'select.partTime': 'משרה חלקית',
+      'select.contract': 'חוזה',
+      'select.freelance': 'פרטי',
+      
+      // Static Text
+      'static.jobsCount': 'משרות',
+      'static.closeModal': 'סגור תיבת דו-דעת',
+      'static.toggleLanguage': 'החלף שפה',
+      'static.toggleTheme': 'החלף נושא',
+      'static.copyright': '©'
     }
   };
 
@@ -278,16 +336,35 @@
     const dict = translations[lang] || translations.en;
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+    
+    // Apply translations to elements with data-i18n
     const nodes = document.querySelectorAll('[data-i18n]');
     nodes.forEach(node => {
       const key = node.getAttribute('data-i18n');
-      if (dict[key]) node.textContent = dict[key];
+      if (dict[key]) {
+        if (node.tagName === 'TITLE') {
+          document.title = dict[key];
+        } else {
+          node.textContent = dict[key];
+        }
+      }
     });
+    
+    // Apply translations to placeholders
     const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
     placeholders.forEach(node => {
       const key = node.getAttribute('data-i18n-placeholder');
       if (dict[key]) node.setAttribute('placeholder', dict[key]);
     });
+    
+    // Apply translations to aria-labels
+    const ariaLabels = document.querySelectorAll('[data-i18n-aria-label]');
+    ariaLabels.forEach(node => {
+      const key = node.getAttribute('data-i18n-aria-label');
+      if (dict[key]) node.setAttribute('aria-label', dict[key]);
+    });
+    
+    // Update language toggle button
     const toggle = document.getElementById('langToggle');
     if (toggle) toggle.textContent = lang.toUpperCase();
   }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Employers – Junicorn Jobs</title>
+  <title data-i18n="pageTitle.employer">Employers – Junicorn Jobs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,12 +19,12 @@
       </a>
       <nav class="nav">
         <a class="nav__link" href="/" data-i18n="nav.home">Home</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" data-i18n-aria-label="static.toggleTheme">
           <svg class="theme-icon" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
-        <button class="btn btn--ghost" id="langToggle" aria-label="Toggle language">EN</button>
+        <button class="btn btn--ghost" id="langToggle" aria-label="Toggle language" data-i18n-aria-label="static.toggleLanguage">EN</button>
       </nav>
     </div>
   </header>
@@ -130,29 +130,29 @@
               </label>
               <label>
                 <span data-i18n="jobForm.location">Location *</span>
-                <input id="location" class="input" required maxlength="80" placeholder="City, Country or Remote" />
+                <input id="location" class="input" required maxlength="80" placeholder="City, Country or Remote" data-i18n-placeholder="placeholders.location" />
               </label>
               <label>
                 <span data-i18n="jobForm.workMode">Work Mode *</span>
                 <select id="workMode" class="select" required>
-                  <option>On-site</option>
-                  <option>Hybrid</option>
-                  <option>Remote</option>
+                  <option data-i18n="select.onsite">On-site</option>
+                  <option data-i18n="select.hybrid">Hybrid</option>
+                  <option data-i18n="select.remote">Remote</option>
                 </select>
               </label>
               <label>
                 <span data-i18n="jobForm.type">Employment Type *</span>
                 <select id="employmentType" class="select" required>
-                  <option>Internship</option>
-                  <option>Full-time</option>
-                  <option>Part-time</option>
-                  <option>Contract</option>
-                  <option>Freelance</option>
+                  <option data-i18n="select.internship">Internship</option>
+                  <option data-i18n="select.fullTime">Full-time</option>
+                  <option data-i18n="select.partTime">Part-time</option>
+                  <option data-i18n="select.contract">Contract</option>
+                  <option data-i18n="select.freelance">Freelance</option>
                 </select>
               </label>
               <label class="grid--full">
                 <span data-i18n="jobForm.description">Short Description *</span>
-                <textarea id="description" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves"></textarea>
+                <textarea id="description" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves" data-i18n-placeholder="placeholders.description"></textarea>
               </label>
               <label>
                 <span data-i18n="jobForm.applyEmail">Apply Email *</span>
@@ -160,11 +160,11 @@
               </label>
               <label>
                 <span data-i18n="jobForm.applyUrl">Apply URL</span>
-                <input id="applyUrl" type="url" class="input" placeholder="https://..." />
+                <input id="applyUrl" type="url" class="input" placeholder="https://..." data-i18n-placeholder="placeholders.applyUrl" />
               </label>
               <label class="grid--full">
                 <span data-i18n="jobForm.tags">Tags (comma separated)</span>
-                <input id="tags" class="input" placeholder="JavaScript, Vue, QA, Data" />
+                <input id="tags" class="input" placeholder="JavaScript, Vue, QA, Data" data-i18n-placeholder="placeholders.tags" />
               </label>
             </div>
             <div class="row">
@@ -215,29 +215,29 @@
                   </label>
                   <label>
                     <span data-i18n="jobForm.location">Location *</span>
-                    <input id="locationManagement" class="input" required maxlength="80" placeholder="City, Country or Remote" />
+                    <input id="locationManagement" class="input" required maxlength="80" placeholder="City, Country or Remote" data-i18n-placeholder="placeholders.location" />
                   </label>
                   <label>
                     <span data-i18n="jobForm.workMode">Work Mode *</span>
                     <select id="workModeManagement" class="select" required>
-                      <option>On-site</option>
-                      <option>Hybrid</option>
-                      <option>Remote</option>
+                      <option data-i18n="select.onsite">On-site</option>
+                      <option data-i18n="select.hybrid">Hybrid</option>
+                      <option data-i18n="select.remote">Remote</option>
                     </select>
                   </label>
                   <label>
                     <span data-i18n="jobForm.type">Employment Type *</span>
                     <select id="employmentTypeManagement" class="select" required>
-                      <option>Internship</option>
-                      <option>Full-time</option>
-                      <option>Part-time</option>
-                      <option>Contract</option>
-                      <option>Freelance</option>
+                      <option data-i18n="select.internship">Internship</option>
+                      <option data-i18n="select.fullTime">Full-time</option>
+                      <option data-i18n="select.partTime">Part-time</option>
+                      <option data-i18n="select.contract">Contract</option>
+                      <option data-i18n="select.freelance">Freelance</option>
                     </select>
                   </label>
                   <label class="grid--full">
                     <span data-i18n="jobForm.description">Short Description *</span>
-                    <textarea id="descriptionManagement" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves"></textarea>
+                    <textarea id="descriptionManagement" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves" data-i18n-placeholder="placeholders.description"></textarea>
                   </label>
                   <label>
                     <span data-i18n="jobForm.applyEmail">Apply Email *</span>
@@ -245,11 +245,11 @@
                   </label>
                   <label>
                     <span data-i18n="jobForm.applyUrl">Apply URL</span>
-                    <input id="applyUrlManagement" type="url" class="input" placeholder="https://..." />
+                    <input id="applyUrlManagement" type="url" class="input" placeholder="https://..." data-i18n-placeholder="placeholders.applyUrl" />
                   </label>
                   <label class="grid--full">
                     <span data-i18n="jobForm.tags">Tags (comma separated)</span>
-                    <input id="tagsManagement" class="input" placeholder="JavaScript, Vue, QA, Data" />
+                    <input id="tagsManagement" class="input" placeholder="JavaScript, Vue, QA, Data" data-i18n-placeholder="placeholders.tags" />
                   </label>
                 </div>
                 <div class="row">
