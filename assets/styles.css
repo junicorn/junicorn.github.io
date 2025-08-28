@@ -554,6 +554,387 @@ body {
 [dir="rtl"] .job__meta-item { flex-direction: row-reverse; }
 [dir="rtl"] .job-modal__meta-item { flex-direction: row-reverse; }
 
+/* Management Tabs */
+.management-tabs { 
+  display: flex; 
+  gap: 0; 
+  margin: 32px 0 24px; 
+  background: var(--panel); 
+  border-radius: 12px; 
+  padding: 4px; 
+  border: 1px solid var(--border); 
+}
+
+.management-tab { 
+  flex: 1; 
+  background: transparent; 
+  color: var(--muted); 
+  border: none; 
+  border-radius: 8px; 
+  padding: 12px 16px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  transition: all .2s ease; 
+}
+
+.management-tab:hover { 
+  color: var(--text); 
+}
+
+.management-tab.is-active { 
+  background: linear-gradient(135deg, var(--primary), var(--primary-2)); 
+  color: white; 
+  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3); 
+}
+
+.management-panels { 
+  position: relative; 
+}
+
+.management-panel { 
+  display: none; 
+  animation: fadeIn .3s ease; 
+}
+
+.management-panel.is-active { 
+  display: block; 
+}
+
+/* Employer Jobs List */
+.employer-jobs { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 16px; 
+  margin-top: 16px; 
+}
+
+.employer-job { 
+  background: var(--card-bg); 
+  border: 1px solid var(--border); 
+  border-radius: 16px; 
+  padding: 20px; 
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.employer-job:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.employer-job__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.employer-job__title { 
+  font-size: 20px; 
+  font-weight: 700; 
+  margin: 0; 
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.employer-job__company {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 4px 0 8px 0;
+}
+
+.employer-job__meta { 
+  color: var(--muted); 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 12px; 
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.employer-job__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.employer-job__meta-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+.employer-job__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.employer-job__status--pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.employer-job__status--approved {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.employer-job__status--unavailable {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.employer-job__status--rejected {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--muted);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.employer-job__tags { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+  margin-bottom: 16px;
+}
+
+.employer-job__description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.employer-job__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.employer-job__btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.employer-job__btn--edit {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.employer-job__btn--edit:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+}
+
+.employer-job__btn--unavailable {
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.employer-job__btn--unavailable:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.employer-job__btn--available {
+  background: transparent;
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.employer-job__btn--available:hover {
+  background: var(--success);
+  color: white;
+}
+
+.employer-job__btn--delete {
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.employer-job__btn--delete:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.employer-job__unavailable-notice {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.employer-job__stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.employer-job__stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Status Update Modal */
+.status-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.status-modal.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.status-modal__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--modal-bg);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+.status-modal__content {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  z-index: 1001;
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.status-modal.is-active .status-modal__content {
+  transform: scale(1) translateY(0);
+}
+
+.status-modal__header {
+  padding: 24px 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.status-modal__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.status-modal__body {
+  padding: 0 24px 24px;
+}
+
+.status-modal__message {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.status-modal__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.status-modal__btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.status-modal__btn--cancel {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.status-modal__btn--cancel:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.status-modal__btn--confirm {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+.status-modal__btn--confirm:hover {
+  background: var(--danger);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* RTL Support for Management */
+[dir="rtl"] .management-tabs { direction: rtl; }
+[dir="rtl"] .employer-job__actions { flex-direction: row-reverse; }
+[dir="rtl"] .employer-job__stats { flex-direction: row-reverse; }
+[dir="rtl"] .status-modal__actions { flex-direction: row-reverse; }
+
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: 1fr; }
   .filters { grid-template-columns: 1fr 1fr; }
@@ -569,5 +950,12 @@ body {
   .job-modal__body { padding: 0 20px 20px; }
   .job-modal__actions { flex-direction: column; }
   .job-modal__btn { flex: none; }
+  .management-tabs { flex-direction: column; }
+  .management-tab { border-radius: 8px; }
+  .employer-job__header { flex-direction: column; align-items: flex-start; }
+  .employer-job__actions { flex-direction: column; align-items: stretch; }
+  .employer-job__btn { justify-content: center; }
+  .status-modal__actions { flex-direction: column; }
+  .status-modal__btn { flex: 1; }
 }
 

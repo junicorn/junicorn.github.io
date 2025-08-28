@@ -175,6 +175,103 @@
         </div>
       </div>
     </section>
+
+    <!-- Job Management Section -->
+    <section class="section hidden" id="jobManagementSection">
+      <div class="container">
+        <div class="job-header">
+          <div>
+            <h1 data-i18n="jobManagement.title">Manage Your Jobs</h1>
+            <p class="muted" data-i18n="jobManagement.subtitle">View and manage all your posted jobs</p>
+          </div>
+          <div class="user-info">
+            <div class="avatar">👤</div>
+            <div>
+              <div id="userEmailManagement" class="strong"></div>
+              <div class="muted" data-i18n="employers.signedIn">Signed in</div>
+            </div>
+            <button id="signOutManagement" class="btn btn--ghost" data-i18n="auth.signOut">Sign out</button>
+          </div>
+        </div>
+
+        <div class="management-tabs">
+          <button class="management-tab is-active" data-tab="post" data-i18n="jobManagement.postNew">Post New Job</button>
+          <button class="management-tab" data-tab="manage" data-i18n="jobManagement.manageJobs">Manage Jobs</button>
+        </div>
+
+        <div class="management-panels">
+          <!-- Post New Job Panel -->
+          <div class="management-panel is-active" data-panel="post">
+            <div class="card">
+              <form id="jobFormManagement" class="form" novalidate>
+                <div class="grid">
+                  <label>
+                    <span data-i18n="jobForm.position">Position Title *</span>
+                    <input id="titleManagement" class="input" required maxlength="100" />
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.company">Company *</span>
+                    <input id="companyManagement" class="input" required maxlength="100" />
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.location">Location *</span>
+                    <input id="locationManagement" class="input" required maxlength="80" placeholder="City, Country or Remote" />
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.workMode">Work Mode *</span>
+                    <select id="workModeManagement" class="select" required>
+                      <option>On-site</option>
+                      <option>Hybrid</option>
+                      <option>Remote</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.type">Employment Type *</span>
+                    <select id="employmentTypeManagement" class="select" required>
+                      <option>Internship</option>
+                      <option>Full-time</option>
+                      <option>Part-time</option>
+                      <option>Contract</option>
+                      <option>Freelance</option>
+                    </select>
+                  </label>
+                  <label class="grid--full">
+                    <span data-i18n="jobForm.description">Short Description *</span>
+                    <textarea id="descriptionManagement" class="textarea" rows="6" required maxlength="2000" placeholder="What you'll do, must-have skills, nice-to-haves"></textarea>
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.applyEmail">Apply Email *</span>
+                    <input id="applyEmailManagement" type="email" class="input" required />
+                  </label>
+                  <label>
+                    <span data-i18n="jobForm.applyUrl">Apply URL</span>
+                    <input id="applyUrlManagement" type="url" class="input" placeholder="https://..." />
+                  </label>
+                  <label class="grid--full">
+                    <span data-i18n="jobForm.tags">Tags (comma separated)</span>
+                    <input id="tagsManagement" class="input" placeholder="JavaScript, Vue, QA, Data" />
+                  </label>
+                </div>
+                <div class="row">
+                  <button class="btn" id="submitJobManagement" type="submit" data-i18n="jobForm.submit">Submit for review</button>
+                  <div id="formStateManagement" class="muted"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Manage Jobs Panel -->
+          <div class="management-panel" data-panel="manage">
+            <div id="jobsLoader" class="loader is-active">
+              <span class="loader__spinner"></span>
+              <span class="loader__text" data-i18n="jobManagement.loading">Loading your jobs...</span>
+            </div>
+            <div id="jobsEmpty" class="empty hidden" data-i18n="jobManagement.noJobs">You haven't posted any jobs yet.</div>
+            <div id="employerJobs" class="employer-jobs"></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Forgot Password Modal -->

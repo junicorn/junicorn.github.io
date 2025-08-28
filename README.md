@@ -1,73 +1,242 @@
-## Junicorn Jobs – Static Jobs Board (GitHub Pages + Firebase + GitHub Actions)
+# Junicorn Jobs - Junior Tech Job Board
 
-This repository hosts a static jobs site for junior developers. Employers submit jobs via Firebase Auth + Realtime Database. A daily GitHub Action exports all approved jobs into `data/jobs.json`, which the public site reads to display listings without hitting Firebase.
+A modern, bilingual job board for junior tech positions. Built with HTML, CSS, JavaScript, and Firebase, hosted on GitHub Pages.
 
-### Stack
-- Static hosting: GitHub Pages
-- Auth + DB: Firebase (Auth + Realtime Database)
-- Export: GitHub Actions + Node (firebase-admin)
-- Front-end: HTML, CSS, JS only (no frameworks)
+## 🌟 Features
 
-### Local Structure
-- `index.html` – Public landing page with filters and listings
-- `employer.html` – Employer portal (login + job submission)
-- `assets/styles.css` – Global styles (responsive, light/dark-ready)
-- `assets/app.js` – Public site logic (load `data/jobs.json`)
-- `assets/i18n.js` – Simple i18n (EN/HE) + RTL handling
-- `assets/employer.js` – Employer portal logic (Firebase Auth + Realtime DB)
-- `data/jobs.json` – Exported jobs (Action writes this file)
-- `scripts/export-jobs.js` – Action script to export jobs from Realtime Database
-- `.github/workflows/export-jobs.yml` – Daily workflow to run exporter
+### For Job Seekers
+- **Bilingual Support**: English and Hebrew with RTL support
+- **Advanced Search**: Filter by location, employment type, and keywords
+- **Modern UI**: LinkedIn-style job cards with modal view
+- **Light/Dark Mode**: Toggle between themes
+- **Responsive Design**: Works on all devices
+- **Real-time Updates**: Jobs updated daily via GitHub Actions
 
-### Firebase Setup
-1. Create a Firebase project and enable:
-   - Authentication: Email/Password and Google
-   - Realtime Database (rules to allow only authenticated employer writes)
-2. In `assets/employer.js`, set your public web config (already scaffolded).
-3. Create a Service Account with Realtime Database access and add its JSON as a GitHub Secret named `FIREBASE_SERVICE_ACCOUNT`.
+### For Employers
+- **Free Job Posting**: No cost to post junior positions
+- **Easy Management**: View and manage all posted jobs
+- **Status Control**: Mark jobs as unavailable to stop applications
+- **Professional Portal**: Modern interface with tabs and status indicators
+- **AI Protection**: Automatic spam and malicious content detection
 
-### GitHub Pages
-- Create an organization (e.g., `junicorn`) and enable GitHub Pages for this repo.
-- Set Pages source to `main` branch, root.
+## 🏗️ Architecture
 
-### GitHub Action Secrets
-- `FIREBASE_SERVICE_ACCOUNT` – The full service account JSON (stringified)
-- Optional: `FIREBASE_PROJECT_ID` – Overrides project from the service account JSON
+### Frontend
+- **Static Site**: HTML, CSS, JavaScript only
+- **Hosting**: GitHub Pages
+- **Design**: Modern, responsive, professional UI
+- **Internationalization**: Full RTL support for Hebrew
 
-### Realtime Database Rules
-If you are not using Realtime Database, lock it entirely. Import `database.rules.json` with:
+### Backend
+- **Firebase Authentication**: Email/password and Google Sign-in
+- **Firebase Realtime Database**: Job storage and management
+- **GitHub Actions**: Daily job export to static JSON
+- **Security**: Comprehensive Firebase security rules
+
+### Data Flow
+1. Employers post jobs via Firebase
+2. Jobs are stored in Realtime Database with status tracking
+3. GitHub Action exports approved jobs daily to `data/jobs.json`
+4. Public site reads from static JSON file (no direct Firebase access)
+
+## 📁 File Structure
 
 ```
-firebase deploy --only database
+/
+├── index.html              # Public job board
+├── employer.html           # Employer portal
+├── assets/
+│   ├── styles.css         # Global styles with themes
+│   ├── app.js            # Public site logic
+│   ├── employer.js       # Employer portal logic
+│   ├── i18n.js          # Internationalization
+│   ├── logo.svg         # Brand assets
+│   ├── hero.svg
+│   └── favicon.svg
+├── data/
+│   └── jobs.json        # Static job data (auto-generated)
+├── scripts/
+│   └── export-jobs.js   # GitHub Action script
+├── .github/workflows/
+│   └── export-jobs.yml  # Daily export workflow
+└── database.rules.json  # Firebase security rules
 ```
 
-### Realtime Database Data Model (path: `/jobs/{jobId}`)
+## 🚀 Setup
+
+### 1. Firebase Configuration
+
+Create a Firebase project and enable:
+- **Authentication**: Email/password and Google providers
+- **Realtime Database**: For job storage
+- **Authorized Domains**: Add `yourusername.github.io` and `localhost`
+
+### 2. Firebase Security Rules
+
 ```json
 {
-  "title": "string",
-  "company": "string", 
-  "location": "string",
-  "employmentType": "Full-time|Part-time|Contract|Internship|Freelance",
-  "workMode": "On-site|Hybrid|Remote",
-  "description": "string (markdown allowed)",
-  "applyEmail": "string",
-  "applyUrl": "string (optional)",
-  "tags": ["string"],
-  "createdAt": "ISO string",
-  "status": "pending|approved|rejected",
-  "ownerUid": "string",
-  "ownerEmail": "string"
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "jobs": {
+      ".indexOn": ["status"],
+      "$jobId": {
+        ".read": "auth != null && (data.child('ownerUid').val() === auth.uid || auth.token.moderator === true)",
+        ".write": "auth != null && ( (!data.exists() && newData.child('ownerUid').val() === auth.uid && newData.child('status').val() === 'pending') || (data.exists() && ( (data.child('ownerUid').val() === auth.uid && data.child('status').val() === 'pending') || auth.token.moderator === true )) )"
+      }
+    }
+  }
 }
 ```
 
-Only `approved` jobs are exported to `data/jobs.json`.
+### 3. GitHub Secrets
 
-### Development
-- Open `index.html` locally via a simple HTTP server to avoid CORS issues.
-- No build step required.
+Add these secrets to your repository:
+- `FIREBASE_SERVICE_ACCOUNT`: Full JSON service account key
+- `FIREBASE_PROJECT_ID`: Your Firebase project ID
+- `PAT_TOKEN`: Personal Access Token (optional, for write permissions)
 
-### Domain Authorization
-To fix "unauthorized-domain" errors:
-1. Go to Firebase Console → Authentication → Settings → Authorized domains
-2. Add your domain (e.g., `junicorn.github.io` for GitHub Pages)
-3. For local development, add `localhost`
+### 4. Repository Settings
+
+Enable GitHub Pages:
+- Source: Deploy from branch
+- Branch: `main`
+- Folder: `/ (root)`
+
+Enable Actions permissions:
+- Settings → Actions → General
+- Workflow permissions: "Read and write permissions"
+
+## 📊 Job Status System
+
+### Status Types
+- **`pending`**: New job awaiting review
+- **`approved`**: Job is live and accepting applications
+- **`unavailable`**: Job temporarily not accepting applications
+- **`rejected`**: Job rejected by moderators
+
+### Employer Actions
+- **Mark as Unavailable**: Hides job from public listings
+- **Mark as Available**: Restores job to public listings
+- **Delete**: Permanently removes job
+
+### Automatic Updates
+- Jobs marked unavailable are automatically updated within 24 hours
+- GitHub Action only exports `approved` jobs to public listings
+- Status changes are reflected in real-time in employer portal
+
+## 🌐 Internationalization
+
+### Supported Languages
+- **English**: Default language
+- **Hebrew**: Full RTL support with proper text direction
+
+### Translation Keys
+All UI text is translatable via `assets/i18n.js`:
+- Navigation and headers
+- Form labels and buttons
+- Status messages and notifications
+- Job management interface
+
+## 🎨 Theming
+
+### Light/Dark Mode
+- Automatic theme detection
+- Manual toggle via header button
+- Persistent theme preference
+- Smooth transitions between themes
+
+### Design System
+- CSS custom properties for consistent theming
+- Gradient backgrounds and modern shadows
+- Responsive breakpoints for all devices
+- Professional color palette with purple/cyan accents
+
+## 🔧 Development
+
+### Local Development
+```bash
+# Start local server
+python3 -m http.server 8000
+
+# Open in browser
+open http://localhost:8000
+```
+
+### Testing
+1. **Public Site**: `http://localhost:8000`
+2. **Employer Portal**: `http://localhost:8000/employer.html`
+3. **Job Management**: Sign in and use "Manage Jobs" tab
+
+### Key Features to Test
+- Job posting and management
+- Status updates (available/unavailable)
+- Bilingual switching
+- Theme toggling
+- Modal job views
+- Responsive design
+
+## 📈 Analytics & Monitoring
+
+### Job Statistics
+- View counts (placeholder for future implementation)
+- Application tracking (placeholder)
+- Posting dates and status history
+
+### Error Handling
+- Comprehensive error messages
+- Graceful fallbacks for network issues
+- User-friendly validation messages
+- Loading states and progress indicators
+
+## 🔒 Security Features
+
+### Content Protection
+- AI-powered spam detection
+- Malicious link prevention
+- Input sanitization and validation
+- Rate limiting on job submissions
+
+### Access Control
+- Firebase Authentication required for job posting
+- Owner-only job management
+- Secure database rules
+- No direct Firebase access from public site
+
+## 🚀 Deployment
+
+### GitHub Pages
+- Automatic deployment from main branch
+- Custom domain support
+- HTTPS enabled by default
+- CDN distribution for fast loading
+
+### GitHub Actions
+- Daily job export at 3:00 UTC
+- Automatic status updates
+- Error handling and retries
+- Timeout protection (3 minutes max)
+
+## 📝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🆘 Support
+
+For issues or questions:
+1. Check the Firebase console for authentication issues
+2. Verify GitHub Actions are running
+3. Check browser console for JavaScript errors
+4. Ensure all environment variables are set correctly
+
+---
+
+**Built with ❤️ for the junior developer community**
