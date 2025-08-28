@@ -456,6 +456,8 @@
     employerJobs.innerHTML = '';
 
     try {
+      console.log('🔍 Loading jobs for user:', auth.currentUser.uid);
+      
       const snapshot = await database.ref('jobs')
         .orderByChild('ownerUid')
         .equalTo(auth.currentUser.uid)
@@ -463,11 +465,16 @@
 
       const jobs = [];
       snapshot.forEach(child => {
-        jobs.push({
-          id: child.key,
-          ...child.val()
-        });
+        const job = child.val();
+        if (job) {
+          jobs.push({
+            id: child.key,
+            ...job
+          });
+        }
       });
+
+      console.log(`📊 Found ${jobs.length} jobs for user`);
 
       if (jobs.length === 0) {
         jobsEmpty.classList.remove('hidden');
@@ -476,7 +483,23 @@
       }
     } catch (error) {
       console.error('Error loading employer jobs:', error);
-      showMessage(jobsLoader, 'Failed to load jobs', 'error');
+      
+      // Handle specific permission errors
+      if (error.code === 'PERMISSION_DENIED') {
+        showMessage(jobsLoader, 
+          window.JI18N.getLang() === 'he' ? 
+          'שגיאת הרשאות. אנא נסה להתחבר מחדש.' : 
+          'Permission error. Please try signing in again.', 
+          'error'
+        );
+      } else {
+        showMessage(jobsLoader, 
+          window.JI18N.getLang() === 'he' ? 
+          'שגיאה בטעינת המשרות. אנא נסה שוב.' : 
+          'Failed to load jobs. Please try again.', 
+          'error'
+        );
+      }
     } finally {
       jobsLoader.classList.remove('is-active');
     }
@@ -591,10 +614,26 @@
     }
 
     try {
-      await database.ref(`jobs/${jobId}`).update({
+      // First, get the current job data
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
+      // Update with all required fields
+      const updatedJob = {
+        ...currentJob,
         status: 'unavailable',
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await database.ref(`jobs/${jobId}`).set(updatedJob);
       
       alert(window.JI18N.getLang() === 'he' ? 
         'הבקשה נשלחה בהצלחה! המשרה תתעדכן תוך 24 שעות.' : 
@@ -609,10 +648,26 @@
 
   window.markJobAvailable = async function(jobId) {
     try {
-      await database.ref(`jobs/${jobId}`).update({
+      // First, get the current job data
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
+      // Update with all required fields
+      const updatedJob = {
+        ...currentJob,
         status: 'approved',
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await database.ref(`jobs/${jobId}`).set(updatedJob);
       
       alert(window.JI18N.getLang() === 'he' ? 
         'המשרה סומנה כזמינה בהצלחה!' : 
@@ -633,6 +688,18 @@
     }
 
     try {
+      // First, verify ownership
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
       await database.ref(`jobs/${jobId}`).remove();
       
       alert(window.JI18N.getLang() === 'he' ? 
@@ -646,4 +713,3 @@
     }
   };
 })();
-
