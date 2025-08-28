@@ -61,13 +61,19 @@ let selectedJobId = null;
 // Load jobs from JSON file
 async function loadJobs() {
     try {
+        console.log('Loading jobs...');
         const response = await fetch('data/jobs.json');
         if (!response.ok) {
             throw new Error('Failed to load jobs');
         }
         
         const data = await response.json();
-        allJobs = data.jobs || [];
+        console.log('Loaded data:', data);
+        
+        // Handle both array format and object with jobs property
+        allJobs = Array.isArray(data) ? data : (data.jobs || []);
+        console.log('Processed jobs:', allJobs);
+        
         filteredJobs = [...allJobs];
         
         renderJobList();
@@ -86,9 +92,11 @@ async function loadJobs() {
 
 // Render job list in sidebar
 function renderJobList() {
+    console.log('Rendering job list with', filteredJobs.length, 'jobs');
     const jobsList = document.getElementById('jobsList');
     
     if (filteredJobs.length === 0) {
+        console.log('No jobs to display, showing empty state');
         jobsList.innerHTML = `
             <div class="jobs-list__empty">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -101,6 +109,7 @@ function renderJobList() {
         return;
     }
     
+    console.log('Rendering', filteredJobs.length, 'job cards');
     jobsList.innerHTML = filteredJobs.map(job => `
         <div class="job-card ${selectedJobId === job.id ? 'job-card--active' : ''}" 
              data-job-id="${job.id}" onclick="selectJob('${job.id}')">
@@ -134,13 +143,17 @@ function renderJobList() {
 
 // Select a job and show its details
 function selectJob(jobId) {
+    console.log('Selecting job:', jobId);
     selectedJobId = jobId;
     const job = allJobs.find(j => j.id === jobId);
     
     if (!job) {
+        console.log('Job not found, showing empty state');
         showEmptyState();
         return;
     }
+    
+    console.log('Found job:', job);
     
     // Update active state in sidebar
     document.querySelectorAll('.job-card').forEach(card => {
@@ -158,6 +171,7 @@ function selectJob(jobId) {
 
 // Render job details in main content
 function renderJobDetails(job) {
+    console.log('Rendering job details for:', job.title);
     const jobDetails = document.getElementById('jobDetails');
     
     const isUnavailable = job.status === 'unavailable';
@@ -243,6 +257,8 @@ function renderJobDetails(job) {
         </div>
     `;
     
+    console.log('Job details rendered successfully');
+    
     // Apply translations to new content
     window.JI18N.apply();
 }
@@ -307,6 +323,7 @@ function updateJobsCount() {
     const lang = window.JI18N.getLang();
     const jobsText = lang === 'he' ? 'משרות' : count === 1 ? 'job' : 'jobs';
     jobsCount.textContent = `${count} ${jobsText}`;
+    console.log('Updated jobs count:', count, jobsText);
 }
 
 // Setup event listeners

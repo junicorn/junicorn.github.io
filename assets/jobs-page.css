@@ -568,7 +568,7 @@
 
 /* Theme Variables */
 :root {
-    --primary-rgb: 99, 102, 241;
+    --primary-rgb: 124, 102, 241;
     --tag-bg: rgba(99, 102, 241, 0.1);
     --tag-text: rgb(99, 102, 241);
     --warning-bg: rgba(245, 158, 11, 0.1);
