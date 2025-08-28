@@ -614,10 +614,26 @@
     }
 
     try {
-      await database.ref(`jobs/${jobId}`).update({
+      // First, get the current job data
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
+      // Update with all required fields
+      const updatedJob = {
+        ...currentJob,
         status: 'unavailable',
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await database.ref(`jobs/${jobId}`).set(updatedJob);
       
       alert(window.JI18N.getLang() === 'he' ? 
         'הבקשה נשלחה בהצלחה! המשרה תתעדכן תוך 24 שעות.' : 
@@ -632,10 +648,26 @@
 
   window.markJobAvailable = async function(jobId) {
     try {
-      await database.ref(`jobs/${jobId}`).update({
+      // First, get the current job data
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
+      // Update with all required fields
+      const updatedJob = {
+        ...currentJob,
         status: 'approved',
         updatedAt: new Date().toISOString()
-      });
+      };
+
+      await database.ref(`jobs/${jobId}`).set(updatedJob);
       
       alert(window.JI18N.getLang() === 'he' ? 
         'המשרה סומנה כזמינה בהצלחה!' : 
@@ -656,6 +688,18 @@
     }
 
     try {
+      // First, verify ownership
+      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
+      const currentJob = jobSnapshot.val();
+      
+      if (!currentJob) {
+        throw new Error('Job not found');
+      }
+      
+      if (currentJob.ownerUid !== auth.currentUser.uid) {
+        throw new Error('Permission denied');
+      }
+
       await database.ref(`jobs/${jobId}`).remove();
       
       alert(window.JI18N.getLang() === 'he' ? 

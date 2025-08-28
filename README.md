@@ -107,14 +107,7 @@ Create a Firebase project and enable:
           (data.exists() && 
            data.child('ownerUid').val() === auth.uid &&
            newData.exists() &&
-           newData.child('ownerUid').val() === auth.uid &&
-           // Allow status updates (pending -> approved, approved -> unavailable, unavailable -> approved)
-           (data.child('status').val() === 'pending' || 
-            data.child('status').val() === 'approved' || 
-            data.child('status').val() === 'unavailable') &&
-           (newData.child('status').val() === 'pending' || 
-            newData.child('status').val() === 'approved' || 
-            newData.child('status').val() === 'unavailable')
+           newData.child('ownerUid').val() === auth.uid
           ) ||
           // Delete job: must be owner
           (data.exists() && 
@@ -138,10 +131,11 @@ firebase deploy --only database
 - ✅ **Authentication Required**: Only logged-in users can access jobs
 - ✅ **Owner-Only Access**: Users can only read/write their own jobs
 - ✅ **Data Validation**: All required fields must be present and non-empty
-- ✅ **Status Control**: Only valid status transitions are allowed
+- ✅ **Status Updates**: Users can update job status (available/unavailable)
 - ✅ **Type Validation**: All fields must be strings
 - ✅ **No Public Access**: Database is completely locked by default
 - ✅ **Indexed Queries**: Efficient queries by status and ownerUid
+- ✅ **Complete Job Updates**: All fields preserved during status changes
 
 **Important:** Make sure to deploy these rules to enable job management functionality.
 

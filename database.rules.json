@@ -31,14 +31,7 @@
           (data.exists() && 
            data.child('ownerUid').val() === auth.uid &&
            newData.exists() &&
-           newData.child('ownerUid').val() === auth.uid &&
-           // Allow status updates (pending -> approved, approved -> unavailable, unavailable -> approved)
-           (data.child('status').val() === 'pending' || 
-            data.child('status').val() === 'approved' || 
-            data.child('status').val() === 'unavailable') &&
-           (newData.child('status').val() === 'pending' || 
-            newData.child('status').val() === 'approved' || 
-            newData.child('status').val() === 'unavailable')
+           newData.child('ownerUid').val() === auth.uid
           ) ||
           // Delete job: must be owner
           (data.exists() && 
