@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Junicorn Jobs – Junior Tech Jobs</title>
+  <meta name="description" content="Curated junior tech jobs. Free to post for employers. Daily refreshed listings." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="/">
+        <img class="brand__logo" src="assets/logo.svg" alt="Junicorn Jobs" />
+        <span class="brand__name">Junicorn Jobs</span>
+      </a>
+      <nav class="nav">
+        <a class="nav__link" href="employer.html" data-i18n="nav.employers">Employers</a>
+        <button class="btn btn--ghost" id="langToggle" aria-label="Toggle language">EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <h1 data-i18n="hero.title">Discover junior tech opportunities</h1>
+          <p class="muted" data-i18n="hero.subtitle">Curated jobs for aspiring developers, designers, and data talents.</p>
+          <div class="filters" id="filters">
+            <input id="q" class="input" type="search" placeholder="Search by title, company, tags" data-i18n-placeholder="filters.search" />
+            <select id="location" class="select">
+              <option value="" data-i18n="filters.anyLocation">Any Location</option>
+              <option value="Remote" data-i18n="filters.remote">Remote</option>
+              <option value="On-site" data-i18n="filters.onsite">On-site</option>
+              <option value="Hybrid" data-i18n="filters.hybrid">Hybrid</option>
+            </select>
+            <select id="employmentType" class="select">
+              <option value="" data-i18n="filters.anyType">Any Type</option>
+              <option>Internship</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Contract</option>
+              <option>Freelance</option>
+            </select>
+            <button id="clearFilters" class="btn" data-i18n="filters.clear">Clear</button>
+          </div>
+        </div>
+        <div class="hero__art" aria-hidden="true">
+          <img src="assets/hero.svg" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div id="jobsMeta" class="jobs-meta">
+          <span id="jobsCount">0</span>
+          <span class="muted" data-i18n="meta.listings">listings</span>
+          <span class="dot">•</span>
+          <span class="muted" data-i18n="meta.updated">updated daily</span>
+        </div>
+        <div id="loader" class="loader is-active">
+          <span class="loader__spinner"></span>
+          <span class="loader__text" data-i18n="loading">Loading jobs…</span>
+        </div>
+        <div id="empty" class="empty hidden" data-i18n="empty">No jobs found. Try adjusting filters.</div>
+        <ul id="jobs" class="jobs"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <span class="brand__name">Junicorn Jobs</span>
+        <span class="muted">© <span id="year"></span></span>
+      </div>
+      <a class="muted" href="employer.html" data-i18n="footer.postFree">Post a job for free</a>
+    </div>
+  </footer>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
+
