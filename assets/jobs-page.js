@@ -304,7 +304,9 @@ function filterJobs() {
 function updateJobsCount() {
     const jobsCount = document.getElementById('jobsCount');
     const count = filteredJobs.length;
-    jobsCount.textContent = `${count} ${window.JI18N.getLang() === 'he' ? 'משרות' : count === 1 ? 'job' : 'jobs'}`;
+    const lang = window.JI18N.getLang();
+    const jobsText = lang === 'he' ? 'משרות' : count === 1 ? 'job' : 'jobs';
+    jobsCount.textContent = `${count} ${jobsText}`;
 }
 
 // Setup event listeners

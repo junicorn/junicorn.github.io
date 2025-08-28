@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Junicorn Jobs – Junior Tech Jobs</title>
+  <title data-i18n="pageTitle.home">Junicorn Jobs – Junior Tech Jobs</title>
   <meta name="description" content="Curated junior tech jobs. Free to post for employers. Daily refreshed listings." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +55,7 @@
         </nav>
 
         <div class="header__actions">
-          <button class="theme-toggle" aria-label="Toggle theme">
+          <button class="theme-toggle" aria-label="Toggle theme" data-i18n-aria-label="static.toggleTheme">
             <svg class="theme-toggle__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/>
@@ -117,7 +117,7 @@
   <div id="jobModal" class="job-modal">
     <div class="job-modal__backdrop"></div>
     <div class="job-modal__content">
-      <button class="job-modal__close" id="closeJobModal" aria-label="Close modal">&times;</button>
+      <button class="job-modal__close" id="closeJobModal" aria-label="Close modal" data-i18n-aria-label="static.closeModal">&times;</button>
       <div class="job-modal__header">
         <h2 class="job-modal__title" id="modalTitle"></h2>
         <div class="job-modal__company" id="modalCompany"></div>
@@ -162,6 +162,11 @@
         document.querySelectorAll('.language-toggle__btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const lang = this.dataset.lang;
+            
+            // Update active state
+            document.querySelectorAll('.language-toggle__btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
             window.JI18N.setLang(lang);
             document.documentElement.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
             document.documentElement.setAttribute('lang', lang);
@@ -171,6 +176,13 @@
         // Initialize theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // Initialize language button active state
+        const currentLang = window.JI18N.getLang();
+        const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
+        if (activeBtn) {
+          activeBtn.classList.add('active');
+        }
       });
     </script>
   </body>
