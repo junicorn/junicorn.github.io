@@ -162,6 +162,11 @@
         document.querySelectorAll('.language-toggle__btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const lang = this.dataset.lang;
+            
+            // Update active state
+            document.querySelectorAll('.language-toggle__btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
             window.JI18N.setLang(lang);
             document.documentElement.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
             document.documentElement.setAttribute('lang', lang);
@@ -171,6 +176,13 @@
         // Initialize theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // Initialize language button active state
+        const currentLang = window.JI18N.getLang();
+        const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
+        if (activeBtn) {
+          activeBtn.classList.add('active');
+        }
       });
     </script>
   </body>
