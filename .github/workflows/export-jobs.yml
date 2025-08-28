@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         timeout-minutes: 1
 
       - name: Setup Node
@@ -54,8 +54,11 @@ jobs:
         run: |
           echo "Updating jobs.json via GitHub API..."
           
+          # Use PAT_TOKEN if available, otherwise GITHUB_TOKEN
+          TOKEN="${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}"
+          
           # Get current file SHA
-          SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          SHA=$(curl -s -H "Authorization: token $TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/contents/data/jobs.json" | \
             jq -r '.sha')
           
@@ -64,7 +67,7 @@ jobs:
           
           # Update file via API
           curl -X PUT \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token $TOKEN" \
             -H "Content-Type: application/json" \
             -d "{
               \"message\": \"chore: update jobs.json [skip ci]\",
