@@ -74,11 +74,12 @@ body {
 .footer__inner { display: flex; align-items: center; justify-content: space-between; }
 
 .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
-.card__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border-bottom: 1px solid var(--border); }
+.card__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); background: radial-gradient(1200px 1200px at -10% -10%, rgba(124,92,255,.08), transparent), radial-gradient(900px 900px at 120% -20%, rgba(34,211,238,.08), transparent); }
 .form { padding: 14px; }
-.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
-.tab { background: transparent; color: var(--text); border: 1px solid var(--border); border-bottom: none; border-radius: 10px 10px 0 0; padding: 8px 12px; cursor: pointer; }
-.tab.is-active { background: var(--panel); }
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 10px; position: sticky; top: 66px; background: rgba(11, 15, 28, 0.7); backdrop-filter: saturate(120%) blur(6px); padding-top: 4px; z-index: 5; }
+.tab { background: linear-gradient(180deg, rgba(124,92,255,.15), rgba(34,211,238,.08)); color: var(--text); border: 1px solid var(--border); border-bottom: none; border-radius: 10px 10px 0 0; padding: 10px 14px; cursor: pointer; transition: transform .06s ease, box-shadow .2s ease; box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+.tab:hover { transform: translateY(-1px); }
+.tab.is-active { background: linear-gradient(180deg, var(--panel), var(--panel-2)); box-shadow: 0 10px 24px rgba(0,0,0,.35); }
 .panel { display: none; }
 .panel.is-active { display: block; }
 .avatar { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: #1c2030; }

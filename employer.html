@@ -50,7 +50,11 @@
               </div>
             </div>
 
-            <div id="anon">
+            <div id="anon" class="card">
+              <div class="card__header">
+                <h3>Sign in</h3>
+                <span class="muted">Choose a method</span>
+              </div>
               <div class="tabs">
                 <button class="tab is-active" data-tab="email" data-i18n="auth.emailTab">Email</button>
                 <button class="tab" data-tab="google" data-i18n="auth.googleTab">Google</button>
@@ -72,10 +76,12 @@
                 </form>
               </div>
               <div class="panel" data-panel="google">
+                <div class="form">
                 <button id="googleSignIn" class="btn btn--icon">
                   <span class="icon">🔐</span>
                   <span data-i18n="auth.signInWithGoogle">Sign in with Google</span>
                 </button>
+                </div>
               </div>
             </div>
           </div>
