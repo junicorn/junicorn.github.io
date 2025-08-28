@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /*
   Exports approved jobs from Realtime Database to data/jobs.json
+  Appends new approved jobs to existing file instead of overwriting
   Requires env var FIREBASE_SERVICE_ACCOUNT containing the full JSON
 */
 const fs = require('fs');
@@ -28,32 +29,59 @@ async function main() {
   const snapshot = await db.ref('jobs').orderByChild('status').equalTo('approved').once('value');
   const jobsData = snapshot.val();
   
-  const items = [];
+  // Load existing jobs from file
+  const outPath = path.join(__dirname, '..', 'data', 'jobs.json');
+  let existingJobs = [];
+  try {
+    if (fs.existsSync(outPath)) {
+      const existingData = fs.readFileSync(outPath, 'utf8');
+      existingJobs = JSON.parse(existingData);
+      if (!Array.isArray(existingJobs)) {
+        existingJobs = [];
+      }
+    }
+  } catch (err) {
+    console.warn('Could not read existing jobs.json, starting fresh:', err.message);
+    existingJobs = [];
+  }
+
+  // Get existing job IDs to avoid duplicates
+  const existingJobIds = new Set(existingJobs.map(job => job.id));
+  
+  const newJobs = [];
   if (jobsData) {
     Object.keys(jobsData).forEach(key => {
-      const data = jobsData[key];
-      items.push({
-        id: key,
-        title: data.title || '',
-        company: data.company || '',
-        location: data.location || '',
-        employmentType: data.employmentType || '',
-        workMode: data.workMode || '',
-        description: data.description || '',
-        applyEmail: data.applyEmail || '',
-        applyUrl: data.applyUrl || '',
-        tags: Array.isArray(data.tags) ? data.tags : [],
-        createdAt: data.createdAt || new Date().toISOString()
-      });
+      // Only add jobs that don't already exist in the file
+      if (!existingJobIds.has(key)) {
+        const data = jobsData[key];
+        newJobs.push({
+          id: key,
+          title: data.title || '',
+          company: data.company || '',
+          location: data.location || '',
+          employmentType: data.employmentType || '',
+          workMode: data.workMode || '',
+          description: data.description || '',
+          applyEmail: data.applyEmail || '',
+          applyUrl: data.applyUrl || '',
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          createdAt: data.createdAt || new Date().toISOString()
+        });
+      }
     });
   }
 
+  // Combine existing and new jobs
+  const allJobs = [...existingJobs, ...newJobs];
+  
   // Sort by creation date (newest first)
-  items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  allJobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  const outPath = path.join(__dirname, '..', 'data', 'jobs.json');
-  fs.writeFileSync(outPath, JSON.stringify(items, null, 2));
-  console.log(`Wrote ${items.length} jobs to ${outPath}`);
+  // Write back to file
+  fs.writeFileSync(outPath, JSON.stringify(allJobs, null, 2));
+  
+  console.log(`Added ${newJobs.length} new jobs to existing ${existingJobs.length} jobs`);
+  console.log(`Total: ${allJobs.length} jobs written to ${outPath}`);
 }
 
 main().catch(err => {
