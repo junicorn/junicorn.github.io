@@ -9,9 +9,13 @@ jobs:
   export:
     runs-on: ubuntu-latest
     timeout-minutes: 5 # Maximum 5 minutes to prevent wasting time
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 2
 
       - name: Setup Node
@@ -31,12 +35,70 @@ jobs:
         run: node scripts/export-jobs.js
         timeout-minutes: 3
 
-      - name: Commit and push jobs.json
+      - name: Check for changes
+        id: check-changes
         run: |
+          if git diff --quiet data/jobs.json; then
+            echo "no-changes=true" >> $GITHUB_OUTPUT
+            echo "No changes to jobs.json"
+          else
+            echo "no-changes=false" >> $GITHUB_OUTPUT
+            echo "Changes detected in jobs.json"
+          fi
+        timeout-minutes: 1
+
+      - name: Update file via GitHub API (fast)
+        if: steps.check-changes.outputs.no-changes == 'false'
+        run: |
+          echo "Updating jobs.json via GitHub API..."
+          
+          # Get current file SHA
+          SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/data/jobs.json" | \
+            jq -r '.sha')
+          
+          # Encode file content
+          CONTENT=$(base64 -w 0 data/jobs.json)
+          
+          # Update file via API
+          curl -X PUT \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"message\": \"chore: update jobs.json [skip ci]\",
+              \"content\": \"$CONTENT\",
+              \"sha\": \"$SHA\"
+            }" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/data/jobs.json"
+          
+          echo "✅ File updated via API"
+        timeout-minutes: 2
+        continue-on-error: true
+
+      - name: Fallback: Git push
+        if: steps.check-changes.outputs.no-changes == 'false' && failure()
+        run: |
+          echo "API update failed, trying git push..."
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/jobs.json
-          git commit -m "chore: update jobs.json [skip ci]" || echo "No changes"
-          git push
+          git commit -m "chore: update jobs.json [skip ci]"
+          git push origin HEAD:${{ github.ref }}
         timeout-minutes: 2
+        continue-on-error: true
+
+      - name: Skip commit (no changes)
+        if: steps.check-changes.outputs.no-changes == 'true'
+        run: echo "No changes to commit, skipping push"
+
+      - name: Final status
+        run: |
+          if [ -f "data/jobs.json" ]; then
+            echo "✅ Jobs file exists and is ready"
+            echo "📊 File size: $(wc -l < data/jobs.json) lines"
+          else
+            echo "❌ Jobs file not found"
+            exit 1
+          fi
+        timeout-minutes: 1
 
