@@ -5,6 +5,7 @@
       'nav.employers': 'Employers',
       'nav.home': 'Home',
       'nav.jobs': 'Jobs',
+      'nav.map': 'Map',
       'nav.employer': 'Employer',
       
       // Hero
@@ -26,6 +27,12 @@
       'jobs.selectJob': 'Select a job to view details',
       'jobs.selectJobDesc': 'Choose a job from the list to see full details and apply',
       
+      // Map Page
+      'map.title': 'Job Map',
+      'map.subtitle': 'Find jobs by location',
+      'map.jobsInArea': 'Jobs in this area',
+      'map.loading': 'Loading jobs...',
+      
       // Filters
       'filters.search': 'Search by title, company, tags',
       'filters.allLocations': 'All Locations',
@@ -42,6 +49,7 @@
       'filters.onsite': 'On-site',
       'filters.hybrid': 'Hybrid',
       'filters.anyType': 'Any Type',
+      'filters.allWorkModes': 'All Work Modes',
       'filters.clear': 'Clear',
       
       // Placeholders
@@ -100,6 +108,8 @@
       'jobForm.position': 'Position Title *',
       'jobForm.company': 'Company *',
       'jobForm.location': 'Location *',
+      'jobForm.latitude': 'Latitude',
+      'jobForm.longitude': 'Longitude',
       'jobForm.workMode': 'Work Mode *',
       'jobForm.type': 'Employment Type *',
       'jobForm.description': 'Short Description *',
@@ -142,6 +152,7 @@
       // Page Titles
       'pageTitle.home': 'Junicorn Jobs – Junior Tech Jobs',
       'pageTitle.jobs': 'Job Listings - Junicorn Jobs',
+      'pageTitle.map': 'Job Map - Junicorn Jobs',
       'pageTitle.employer': 'Employers – Junicorn Jobs',
       
       // Select Options
@@ -166,6 +177,7 @@
       'nav.employers': 'למעסיקים',
       'nav.home': 'דף הבית',
       'nav.jobs': 'משרות',
+      'nav.map': 'מפה',
       'nav.employer': 'מעסיק',
       
       // Hero
@@ -187,6 +199,12 @@
       'jobs.selectJob': 'בחר משרה לצפייה בפרטים',
       'jobs.selectJobDesc': 'בחר משרה מהרשימה כדי לראות פרטים מלאים ולהגיש מועמדות',
       
+      // Map Page
+      'map.title': 'מפה משרות',
+      'map.subtitle': 'מצא משרות לפי מיקום',
+      'map.jobsInArea': 'משרות באזור זה',
+      'map.loading': 'טוען משרות...',
+      
       // Filters
       'filters.search': 'חיפוש לפי תפקיד, חברה, תגיות',
       'filters.allLocations': 'כל המיקומים',
@@ -203,6 +221,7 @@
       'filters.onsite': 'במשרד',
       'filters.hybrid': 'היברידי',
       'filters.anyType': 'כל סוג',
+      'filters.allWorkModes': 'כל מצבי עבודה',
       'filters.clear': 'נקה',
       
       // Placeholders
@@ -261,6 +280,8 @@
       'jobForm.position': 'כותרת התפקיד *',
       'jobForm.company': 'חברה *',
       'jobForm.location': 'מיקום *',
+      'jobForm.latitude': 'קו רוחב',
+      'jobForm.longitude': 'קו אורך',
       'jobForm.workMode': 'מצב עבודה *',
       'jobForm.type': 'סוג העסקה *',
       'jobForm.description': 'תיאור קצר *',
@@ -303,6 +324,7 @@
       // Page Titles
       'pageTitle.home': 'Junicorn Jobs – Junior Tech Jobs',
       'pageTitle.jobs': 'Job Listings - Junicorn Jobs',
+      'pageTitle.map': 'Job Map - Junicorn Jobs',
       'pageTitle.employer': 'Employers – Junicorn Jobs',
       
       // Select Options

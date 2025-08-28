@@ -406,6 +406,8 @@
         title: document.getElementById('titleManagement').value.trim(),
         company: document.getElementById('companyManagement').value.trim(),
         location: document.getElementById('locationManagement').value.trim(),
+        latitude: document.getElementById('latitudeManagement').value ? parseFloat(document.getElementById('latitudeManagement').value) : null,
+        longitude: document.getElementById('longitudeManagement').value ? parseFloat(document.getElementById('longitudeManagement').value) : null,
         workMode: document.getElementById('workModeManagement').value,
         employmentType: document.getElementById('employmentTypeManagement').value,
         description: document.getElementById('descriptionManagement').value.trim(),
