@@ -14,5 +14,21 @@
     "status": "approved",
     "ownerUid": "sample-user",
     "ownerEmail": "hr@techcorp.co.il"
+  },
+  {
+    "id": "sample-2",
+    "title": "Junior Data Analyst",
+    "company": "DataFlow Solutions",
+    "location": "Remote",
+    "workMode": "Remote",
+    "employmentType": "Full-time",
+    "description": "Join our data team as a junior analyst! You'll work with SQL, Python, and visualization tools to help businesses make data-driven decisions. Perfect role for someone who loves numbers and wants to grow in the data field. We provide training and mentorship to help you succeed.",
+    "applyEmail": "careers@dataflow.com",
+    "applyUrl": "https://dataflow.com/jobs",
+    "tags": ["SQL", "Python", "Data Analysis", "Excel", "Tableau", "Junior"],
+    "createdAt": "2024-01-16T14:30:00.000Z",
+    "status": "approved",
+    "ownerUid": "sample-user-2",
+    "ownerEmail": "hr@dataflow.com"
   }
 ]

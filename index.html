@@ -53,7 +53,7 @@
               <option>Contract</option>
               <option>Freelance</option>
             </select>
-            <button id="clearFilters" class="btn" data-i18n="filters.clear">Clear</button>
+            <button id="clearFilters" class="btn btn--search" data-i18n="filters.clear">Clear</button>
           </div>
         </div>
         <div class="hero__art" aria-hidden="true">
@@ -79,6 +79,24 @@
       </div>
     </section>
   </main>
+
+  <!-- Job Modal -->
+  <div id="jobModal" class="job-modal">
+    <div class="job-modal__backdrop"></div>
+    <div class="job-modal__content">
+      <button class="job-modal__close" id="closeJobModal" aria-label="Close modal">&times;</button>
+      <div class="job-modal__header">
+        <h2 class="job-modal__title" id="modalTitle"></h2>
+        <div class="job-modal__company" id="modalCompany"></div>
+        <div class="job-modal__meta" id="modalMeta"></div>
+      </div>
+      <div class="job-modal__body">
+        <div class="job-modal__tags" id="modalTags"></div>
+        <div class="job-modal__description" id="modalDescription"></div>
+        <div class="job-modal__actions" id="modalActions"></div>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="container footer__inner">
