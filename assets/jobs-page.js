@@ -330,31 +330,26 @@ function updateJobsCount() {
 function setupEventListeners() {
     // Theme toggle
     const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle.addEventListener('click', toggleTheme);
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
     
-    // Language toggle
-    document.querySelectorAll('.language-toggle__btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const lang = btn.dataset.lang;
-            window.JI18N.setLang(lang);
-            document.documentElement.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', lang);
-            
-            // Update UI elements
-            updateJobsCount();
-            if (selectedJobId) {
-                const job = allJobs.find(j => j.id === selectedJobId);
-                if (job) {
-                    renderJobDetails(job);
-                }
-            }
-        });
-    });
+    // Search functionality
+    const searchInput = document.getElementById('jobSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', filterJobs);
+    }
     
-    // Search and filters
-    document.getElementById('jobSearch').addEventListener('input', filterJobs);
-    document.getElementById('locationFilter').addEventListener('change', filterJobs);
-    document.getElementById('typeFilter').addEventListener('change', filterJobs);
+    // Filter functionality
+    const locationFilter = document.getElementById('locationFilter');
+    if (locationFilter) {
+        locationFilter.addEventListener('change', filterJobs);
+    }
+    
+    const typeFilter = document.getElementById('typeFilter');
+    if (typeFilter) {
+        typeFilter.addEventListener('change', filterJobs);
+    }
 }
 
 // Utility functions
