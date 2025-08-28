@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings - Junicorn Jobs</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/jobs-page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__logo">
+                    <a href="index.html" class="logo">
+                        <svg class="logo__icon" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="logo__text">Junicorn Jobs</span>
+                    </a>
+                </div>
+                
+                <nav class="header__nav">
+                    <a href="index.html" class="nav-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9,22 9,12 15,12 15,22"/>
+                        </svg>
+                        <span data-i18n="nav.home">Home</span>
+                    </a>
+                    <a href="jobs.html" class="nav-link nav-link--active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 7L8 14L2 11L8 4L20 11L14 14L20 7Z"/>
+                            <path d="M8 14V21L14 18V11"/>
+                        </svg>
+                        <span data-i18n="nav.jobs">Jobs</span>
+                    </a>
+                    <a href="employer.html" class="nav-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <span data-i18n="nav.employer">Employer</span>
+                    </a>
+                </nav>
+
+                <div class="header__actions">
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <svg class="theme-toggle__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="language-toggle">
+                        <button class="language-toggle__btn" data-lang="en">EN</button>
+                        <button class="language-toggle__btn" data-lang="he">עב</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="jobs-page">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="jobs-page__header">
+                <div class="jobs-page__title">
+                    <h1 data-i18n="jobs.title">Available Jobs</h1>
+                    <p data-i18n="jobs.subtitle">Find your next opportunity in tech</p>
+                </div>
+                
+                <!-- Search and Filters -->
+                <div class="jobs-page__filters">
+                    <div class="search-box">
+                        <svg class="search-box__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-box__input" placeholder="Search jobs..." id="jobSearch">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <select class="filter-select" id="locationFilter">
+                            <option value="" data-i18n="filters.allLocations">All Locations</option>
+                            <option value="remote" data-i18n="filters.remote">Remote</option>
+                            <option value="tel-aviv" data-i18n="filters.telAviv">Tel Aviv</option>
+                            <option value="jerusalem" data-i18n="filters.jerusalem">Jerusalem</option>
+                            <option value="haifa" data-i18n="filters.haifa">Haifa</option>
+                        </select>
+                        
+                        <select class="filter-select" id="typeFilter">
+                            <option value="" data-i18n="filters.allTypes">All Types</option>
+                            <option value="full-time" data-i18n="filters.fullTime">Full Time</option>
+                            <option value="part-time" data-i18n="filters.partTime">Part Time</option>
+                            <option value="contract" data-i18n="filters.contract">Contract</option>
+                            <option value="internship" data-i18n="filters.internship">Internship</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Layout -->
+            <div class="jobs-layout">
+                <!-- Sidebar - Job List -->
+                <aside class="jobs-sidebar">
+                    <div class="jobs-sidebar__header">
+                        <h3 data-i18n="jobs.listTitle">Job Listings</h3>
+                        <span class="jobs-count" id="jobsCount">0 jobs</span>
+                    </div>
+                    
+                    <div class="jobs-list" id="jobsList">
+                        <!-- Jobs will be loaded here -->
+                        <div class="jobs-list__loading">
+                            <div class="loading-spinner"></div>
+                            <p data-i18n="jobs.loading">Loading jobs...</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content - Job Details -->
+                <main class="jobs-main">
+                    <div class="job-details" id="jobDetails">
+                        <!-- Default state -->
+                        <div class="job-details__empty">
+                            <div class="empty-state">
+                                <svg class="empty-state__icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M20 7L8 14L2 11L8 4L20 11L14 14L20 7Z"/>
+                                    <path d="M8 14V21L14 18V11"/>
+                                </svg>
+                                <h3 data-i18n="jobs.selectJob">Select a job to view details</h3>
+                                <p data-i18n="jobs.selectJobDesc">Choose a job from the list to see full details and apply</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="assets/i18n.js"></script>
+    <script src="assets/jobs-page.js"></script>
+</body>
+</html>

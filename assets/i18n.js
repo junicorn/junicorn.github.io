@@ -1,31 +1,77 @@
 (function() {
   const translations = {
     en: {
+      // Navigation
       'nav.employers': 'Employers',
       'nav.home': 'Home',
+      'nav.jobs': 'Jobs',
+      'nav.employer': 'Employer',
+      
+      // Hero
       'hero.title': 'Discover junior tech opportunities',
       'hero.subtitle': 'Curated jobs for aspiring developers, designers, and data talents.',
+      'hero.browseJobs': 'Browse Jobs',
+      'hero.postJob': 'Post a Job',
+      
+      // Featured Jobs
+      'featured.title': 'Featured Jobs',
+      'featured.subtitle': 'Latest opportunities for junior developers',
+      'featured.viewAll': 'View All Jobs',
+      
+      // Jobs Page
+      'jobs.title': 'Available Jobs',
+      'jobs.subtitle': 'Find your next opportunity in tech',
+      'jobs.listTitle': 'Job Listings',
+      'jobs.loading': 'Loading jobs...',
+      'jobs.selectJob': 'Select a job to view details',
+      'jobs.selectJobDesc': 'Choose a job from the list to see full details and apply',
+      
+      // Filters
       'filters.search': 'Search by title, company, tags',
-      'filters.anyLocation': 'Any Location',
+      'filters.allLocations': 'All Locations',
       'filters.remote': 'Remote',
+      'filters.telAviv': 'Tel Aviv',
+      'filters.jerusalem': 'Jerusalem',
+      'filters.haifa': 'Haifa',
+      'filters.allTypes': 'All Types',
+      'filters.fullTime': 'Full Time',
+      'filters.partTime': 'Part Time',
+      'filters.contract': 'Contract',
+      'filters.internship': 'Internship',
+      'filters.anyLocation': 'Any Location',
       'filters.onsite': 'On-site',
       'filters.hybrid': 'Hybrid',
       'filters.anyType': 'Any Type',
       'filters.clear': 'Clear',
+      
+      // Job Details
+      'job.apply': 'Apply for this position',
+      'job.sendEmail': 'Send Email',
+      'job.applyViaLink': 'Apply via Link',
+      'job.notAvailable': 'Job Not Available',
+      'job.notAvailableDesc': 'This job is not currently accepting applications. Please check other jobs or try again later.',
+      'job.posted': 'Posted',
+      'job.expand': 'Show more',
+      'job.viewDetails': 'View Details',
+      'job.email': 'Email',
+      
+      // Meta
       'meta.listings': 'listings',
       'meta.updated': 'updated daily',
       'loading': 'Loading jobs…',
       'empty': 'No jobs found. Try adjusting filters.',
+      
+      // Footer
       'footer.postFree': 'Post a job for free',
       'footer.browse': 'Browse jobs',
-      'job.expand': 'Show more',
-      'job.viewDetails': 'View Details',
-      'job.apply': 'Apply',
-      'job.email': 'Email',
+      
+      // Employers
       'employers.title': 'Employer Portal',
       'employers.subtitle': 'Sign in and publish junior-friendly jobs. Free and fast.',
       'employers.warningTitle': 'Important',
       'employers.warningBody': 'All submissions are automatically scanned by AI for spam, malicious links, or harmful content. Offenders may face removal and legal action. The service is free for the public good—please post responsibly.',
+      
+      // Auth
       'auth.signInTab': 'Sign In',
       'auth.registerTab': 'Register',
       'auth.email': 'Email',
@@ -40,6 +86,8 @@
       'auth.forgotPasswordTitle': 'Reset Password',
       'auth.sendResetLink': 'Send Reset Link',
       'employers.signedIn': 'Signed in',
+      
+      // Job Form
       'jobForm.title': 'Post a Job',
       'jobForm.subtitle': 'Fields marked * are required. Jobs are reviewed.',
       'jobForm.position': 'Position Title *',
@@ -52,6 +100,8 @@
       'jobForm.applyUrl': 'Apply URL',
       'jobForm.tags': 'Tags (comma separated)',
       'jobForm.submit': 'Submit for review',
+      
+      // Job Management
       'jobManagement.title': 'Manage Your Jobs',
       'jobManagement.subtitle': 'View and manage all your posted jobs',
       'jobManagement.postNew': 'Post New Job',
@@ -76,63 +126,115 @@
       'jobManagement.confirmDeleteMessage': 'This action cannot be undone. The job will be permanently removed.',
       'jobManagement.updateSuccess': 'Request sent successfully! The job will be updated within 24 hours.',
       'jobManagement.deleteSuccess': 'Job deleted successfully!',
+      
+      // Common
       'common.cancel': 'Cancel',
       'common.confirm': 'Confirm',
       'common.delete': 'Delete'
     },
     he: {
+      // Navigation
       'nav.employers': 'למעסיקים',
       'nav.home': 'דף הבית',
+      'nav.jobs': 'משרות',
+      'nav.employer': 'מעסיק',
+      
+      // Hero
       'hero.title': 'גילוי הזדמנויות הייטק לג׳וניורים',
       'hero.subtitle': 'משרות נבחרות למפתחים, מעצבים ואנשי דאטה בתחילת הדרך.',
+      'hero.browseJobs': 'עיין במשרות',
+      'hero.postJob': 'פרסם משרה',
+      
+      // Featured Jobs
+      'featured.title': 'משרות מומלצות',
+      'featured.subtitle': 'הזדמנויות אחרונות למפתחים ג׳וניורים',
+      'featured.viewAll': 'צפה בכל המשרות',
+      
+      // Jobs Page
+      'jobs.title': 'משרות זמינות',
+      'jobs.subtitle': 'מצא את ההזדמנות הבאה שלך בהייטק',
+      'jobs.listTitle': 'רשימת משרות',
+      'jobs.loading': 'טוען משרות...',
+      'jobs.selectJob': 'בחר משרה לצפייה בפרטים',
+      'jobs.selectJobDesc': 'בחר משרה מהרשימה כדי לראות פרטים מלאים ולהגיש מועמדות',
+      
+      // Filters
       'filters.search': 'חיפוש לפי תפקיד, חברה, תגיות',
+      'filters.allLocations': 'כל המיקומים',
+      'filters.remote': 'עבודה מרחוק',
+      'filters.telAviv': 'תל אביב',
+      'filters.jerusalem': 'ירושלים',
+      'filters.haifa': 'חיפה',
+      'filters.allTypes': 'כל הסוגים',
+      'filters.fullTime': 'משרה מלאה',
+      'filters.partTime': 'משרה חלקית',
+      'filters.contract': 'חוזה',
+      'filters.internship': 'התמחות',
       'filters.anyLocation': 'כל מיקום',
-      'filters.remote': 'מרחוק',
       'filters.onsite': 'במשרד',
       'filters.hybrid': 'היברידי',
       'filters.anyType': 'כל סוג',
       'filters.clear': 'נקה',
-      'meta.listings': 'מודעות',
-      'meta.updated': 'מתעדכן מדי יום',
-      'loading': 'טוען משרות…',
-      'empty': 'לא נמצאו משרות. נסו לשנות סינון.',
-      'footer.postFree': 'פרסם משרה בחינם',
-      'footer.browse': 'עיון במשרות',
+      
+      // Job Details
+      'job.apply': 'הגש מועמדות למשרה זו',
+      'job.sendEmail': 'שלח מייל',
+      'job.applyViaLink': 'הגש בקישור',
+      'job.notAvailable': 'משרה לא זמינה',
+      'job.notAvailableDesc': 'משרה זו אינה מקבלת פניות כרגע. אנא בדוק משרות אחרות או נסה שוב מאוחר יותר.',
+      'job.posted': 'פורסם לפני',
       'job.expand': 'הצג עוד',
-      'job.viewDetails': 'צפה בפרטים',
-      'job.apply': 'הגש מועמדות',
-      'job.email': 'שלח אימייל',
-      'employers.title': 'איזור מעסיקים',
-      'employers.subtitle': 'התחברו ופרסמו משרות ידידותיות לג׳וניורים. מהיר וחינמי.',
+      'job.viewDetails': 'הצג פרטים',
+      'job.email': 'מייל',
+      
+      // Meta
+      'meta.listings': 'משרות',
+      'meta.updated': 'מתעדכן יומי',
+      'loading': 'טוען משרות...',
+      'empty': 'לא נמצאו משרות. נסה לשנות את הפילטרים.',
+      
+      // Footer
+      'footer.postFree': 'פרסם משרה בחינם',
+      'footer.browse': 'עיין במשרות',
+      
+      // Employers
+      'employers.title': 'פורטל מעסיקים',
+      'employers.subtitle': 'התחבר ופרסם משרות ידידותיות לג׳וניורים. חינמי ומהיר.',
       'employers.warningTitle': 'חשוב',
-      'employers.warningBody': 'כל ההגשות נסרקות אוטומטית ע״י AI לאיתור ספאם, קישורים זדוניים או תוכן מזיק. מפרים עשויים להימחק ואף לעמוד לדין. השירות חינמי למען הציבור—אנא פרסמו באחריות.',
+      'employers.warningBody': 'כל ההגשות נסרקות אוטומטית על ידי AI לספאם, קישורים זדוניים או תוכן מזיק. מפירים עלולים לעמוד בפני הסרה ופעולה משפטית. השירות חינמי לטובת הציבור - אנא פרסם באחריות.',
+      
+      // Auth
       'auth.signInTab': 'התחברות',
       'auth.registerTab': 'הרשמה',
       'auth.email': 'אימייל',
       'auth.password': 'סיסמה',
       'auth.confirmPassword': 'אימות סיסמה',
-      'auth.signIn': 'התחברות',
+      'auth.signIn': 'התחבר',
       'auth.createAccount': 'צור חשבון',
-      'auth.signInWithGoogle': 'התחברות עם Google',
-      'auth.signUpWithGoogle': 'הרשמה עם Google',
-      'auth.signOut': 'התנתקות',
-      'auth.forgotPassword': 'שכחתי סיסמה?',
+      'auth.signInWithGoogle': 'התחבר עם Google',
+      'auth.signUpWithGoogle': 'הירשם עם Google',
+      'auth.signOut': 'התנתק',
+      'auth.forgotPassword': 'שכחת סיסמה?',
       'auth.forgotPasswordTitle': 'איפוס סיסמה',
       'auth.sendResetLink': 'שלח קישור איפוס',
       'employers.signedIn': 'מחובר',
-      'jobForm.title': 'פרסום משרה',
-      'jobForm.subtitle': 'שדות עם * הינם חובה. המשרות נבדקות.',
-      'jobForm.position': 'שם התפקיד *',
-      'jobForm.company': 'שם החברה *',
+      
+      // Job Form
+      'jobForm.title': 'פרסם משרה',
+      'jobForm.subtitle': 'שדות המסומנים ב-* הם חובה. משרות נבדקות.',
+      'jobForm.position': 'כותרת התפקיד *',
+      'jobForm.company': 'חברה *',
       'jobForm.location': 'מיקום *',
-      'jobForm.workMode': 'אופן עבודה *',
-      'jobForm.type': 'סוג משרה *',
+      'jobForm.workMode': 'מצב עבודה *',
+      'jobForm.type': 'סוג העסקה *',
       'jobForm.description': 'תיאור קצר *',
-      'jobForm.applyEmail': 'אימייל לשליחת קו״ח *',
+      'jobForm.applyEmail': 'מייל להגשה *',
       'jobForm.applyUrl': 'קישור להגשה',
       'jobForm.tags': 'תגיות (מופרדות בפסיקים)',
-      'jobForm.submit': 'שליחה לבדיקה',
-      'jobManagement.title': 'ניהול המשרות שלך',
+      'jobForm.submit': 'שלח לבדיקה',
+      
+      // Job Management
+      'jobManagement.title': 'נהל את המשרות שלך',
       'jobManagement.subtitle': 'צפה ונהל את כל המשרות שפרסמת',
       'jobManagement.postNew': 'פרסם משרה חדשה',
       'jobManagement.manageJobs': 'נהל משרות',
@@ -146,16 +248,18 @@
       'jobManagement.actions.markUnavailable': 'סמן כלא זמין',
       'jobManagement.actions.markAvailable': 'סמן כזמין',
       'jobManagement.actions.delete': 'מחק',
-      'jobManagement.unavailableNotice': 'תפקיד זה אינו מקבל מועמדויות כרגע. יתעדכן אוטומטית תוך 24 שעות.',
+      'jobManagement.unavailableNotice': 'תפקיד זה אינו מקבל פניות כרגע. הוא יתעדכן אוטומטית תוך 24 שעות.',
       'jobManagement.stats.views': 'צפיות',
       'jobManagement.stats.applications': 'הגשות',
       'jobManagement.stats.posted': 'פורסם',
       'jobManagement.confirmUnavailable': 'סמן משרה כלא זמינה',
-      'jobManagement.confirmUnavailableMessage': 'זה יסתיר את המשרה מהרשימה הציבורית ויסיר את פרטי הקשר. המשרה תתעדכן אוטומטית תוך 24 שעות.',
+      'jobManagement.confirmUnavailableMessage': 'זה יסתיר את המשרה מרשימות ציבוריות ויסיר מידע ליצירת קשר. המשרה תתעדכן אוטומטית תוך 24 שעות.',
       'jobManagement.confirmDelete': 'מחק משרה',
       'jobManagement.confirmDeleteMessage': 'פעולה זו אינה ניתנת לביטול. המשרה תוסר לצמיתות.',
       'jobManagement.updateSuccess': 'הבקשה נשלחה בהצלחה! המשרה תתעדכן תוך 24 שעות.',
       'jobManagement.deleteSuccess': 'המשרה נמחקה בהצלחה!',
+      
+      // Common
       'common.cancel': 'ביטול',
       'common.confirm': 'אישור',
       'common.delete': 'מחק'

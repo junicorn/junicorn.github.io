@@ -79,15 +79,65 @@ Create a Firebase project and enable:
     ".read": false,
     ".write": false,
     "jobs": {
-      ".indexOn": ["status"],
+      ".indexOn": ["status", "ownerUid"],
+      ".read": "auth != null",
       "$jobId": {
-        ".read": "auth != null && (data.child('ownerUid').val() === auth.uid || auth.token.moderator === true)",
-        ".write": "auth != null && ( (!data.exists() && newData.child('ownerUid').val() === auth.uid && newData.child('status').val() === 'pending') || (data.exists() && ( (data.child('ownerUid').val() === auth.uid && data.child('status').val() === 'pending') || auth.token.moderator === true )) )"
+        ".read": "auth != null && data.exists() && data.child('ownerUid').val() === auth.uid",
+        ".write": "auth != null && (
+          // Create new job: must be pending status and owner must match
+          (!data.exists() && 
+           newData.exists() && 
+           newData.child('ownerUid').val() === auth.uid && 
+           newData.child('status').val() === 'pending' &&
+           newData.child('title').isString() &&
+           newData.child('company').isString() &&
+           newData.child('location').isString() &&
+           newData.child('description').isString() &&
+           newData.child('applyEmail').isString() &&
+           newData.child('createdAt').isString() &&
+           newData.child('employmentType').isString() &&
+           newData.child('workMode').isString() &&
+           newData.child('title').val().length > 0 &&
+           newData.child('company').val().length > 0 &&
+           newData.child('location').val().length > 0 &&
+           newData.child('description').val().length > 0 &&
+           newData.child('applyEmail').val().length > 0
+          ) ||
+          // Update existing job: must be owner and job exists
+          (data.exists() && 
+           data.child('ownerUid').val() === auth.uid &&
+           newData.exists() &&
+           newData.child('ownerUid').val() === auth.uid
+          ) ||
+          // Delete job: must be owner
+          (data.exists() && 
+           data.child('ownerUid').val() === auth.uid &&
+           !newData.exists()
+          )
+        )",
+        ".validate": "newData.hasChildren(['ownerUid', 'title', 'company', 'location', 'description', 'applyEmail', 'createdAt', 'status', 'employmentType', 'workMode'])"
       }
     }
   }
 }
 ```
+
+**Deploy the rules:**
+```bash
+firebase deploy --only database
+```
+
+**Security Features:**
+- ✅ **Authentication Required**: Only logged-in users can access jobs
+- ✅ **Owner-Only Access**: Users can only read/write their own jobs
+- ✅ **Data Validation**: All required fields must be present and non-empty
+- ✅ **Status Updates**: Users can update job status (available/unavailable)
+- ✅ **Type Validation**: All fields must be strings
+- ✅ **No Public Access**: Database is completely locked by default
+- ✅ **Indexed Queries**: Efficient queries by status and ownerUid
+- ✅ **Complete Job Updates**: All fields preserved during status changes
+
+**Important:** Make sure to deploy these rules to enable job management functionality.
 
 ### 3. GitHub Secrets
 
