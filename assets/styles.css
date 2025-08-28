@@ -96,3 +96,9 @@ body {
   .cols { grid-template-columns: 1fr; }
 }
 
+.auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .auth-grid { grid-template-columns: 1fr; } }
+
+/* Disabled state for job form when not authed */
+.is-disabled { opacity: .6; filter: grayscale(.15); pointer-events: none; }
+

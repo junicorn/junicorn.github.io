@@ -9,16 +9,7 @@
     langToggle.textContent = window.JI18N.getLang().toUpperCase();
   }
 
-  // Tabs
-  const tabs = document.querySelectorAll('.tab');
-  const panels = document.querySelectorAll('.panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const name = tab.getAttribute('data-tab');
-      tabs.forEach(t => t.classList.toggle('is-active', t === tab));
-      panels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-panel') === name));
-    });
-  });
+  // Removed tabs; now separate cards for sign-in and register
 
   // Firebase
   // Firebase Web v9 modular SDK via script import
@@ -63,17 +54,20 @@
       authedEl.classList.remove('hidden');
       anonEl.classList.add('hidden');
       userEmailEl.textContent = user.email || '';
+      toggleJobForm(true);
     } else {
       authedEl.classList.add('hidden');
       anonEl.classList.remove('hidden');
       userEmailEl.textContent = '';
+      toggleJobForm(false);
     }
   }
 
   function bindAuthUI() {
-    const emailForm = document.getElementById('emailAuth');
-    const registerBtn = document.getElementById('register');
-    const googleBtn = document.getElementById('googleSignIn');
+    const signInForm = document.getElementById('emailSignInForm');
+    const registerForm = document.getElementById('emailRegisterForm');
+    const googleSignInBtn = document.getElementById('googleSignIn');
+    const googleRegisterBtn = document.getElementById('googleRegister');
     const signOutBtn = document.getElementById('signOut');
 
     function sanitizeEmail(raw) {
@@ -85,11 +79,11 @@
         .toLowerCase();
     }
 
-    emailForm.addEventListener('submit', async (e) => {
+    signInForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const emailInput = document.getElementById('email');
-      const passInput = document.getElementById('password');
-      const state = document.getElementById('authState');
+      const emailInput = document.getElementById('emailSignIn');
+      const passInput = document.getElementById('passwordSignIn');
+      const state = document.getElementById('authStateSignIn');
       const email = sanitizeEmail(emailInput.value);
       const password = passInput.value;
       state.textContent = '';
@@ -111,10 +105,11 @@
         state.style.color = '#ef4444';
       }
     });
-    registerBtn.addEventListener('click', async () => {
-      const state = document.getElementById('authState');
-      const email = sanitizeEmail(document.getElementById('email').value);
-      const password = document.getElementById('password').value;
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const state = document.getElementById('authStateRegister');
+      const email = sanitizeEmail(document.getElementById('emailRegister').value);
+      const password = document.getElementById('passwordRegister').value;
       state.textContent = '';
       const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
       if (!emailOk) { state.textContent = 'Please enter a valid email'; state.style.color = '#ef4444'; return; }
@@ -133,17 +128,38 @@
         state.style.color = '#ef4444';
       }
     });
-    googleBtn.addEventListener('click', async () => {
+    googleSignInBtn.addEventListener('click', async () => {
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         await auth.signInWithPopup(provider);
       } catch (err) {
-        alert(err.message);
+        const el = document.getElementById('authStateSignIn');
+        el.textContent = err.message;
+        el.style.color = '#ef4444';
+      }
+    });
+    googleRegisterBtn.addEventListener('click', async () => {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+      } catch (err) {
+        const el = document.getElementById('authStateRegister');
+        el.textContent = err.message;
+        el.style.color = '#ef4444';
       }
     });
     signOutBtn.addEventListener('click', async () => {
       await auth.signOut();
     });
+  }
+
+  function toggleJobForm(enabled) {
+    const card = document.getElementById('jobFormCard');
+    const form = document.getElementById('jobForm');
+    if (!card || !form) return;
+    const controls = form.querySelectorAll('input, select, textarea, button');
+    controls.forEach(el => el.disabled = !enabled);
+    card.classList.toggle('is-disabled', !enabled);
   }
 
   function validateJob(payload) {
