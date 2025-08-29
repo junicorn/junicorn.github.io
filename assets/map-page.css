@@ -309,7 +309,11 @@
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
+    max-height: 500px; /* 👈 כאן תוכל לקבוע גובה מקסימלי */
+
 }
+
+
 
 .map-jobs-list__loading {
     display: flex;
@@ -711,6 +715,7 @@
 
     .map-jobs-list {
         padding: 0.75rem;
+
     }
 
     .job-modal__header,
