@@ -58,6 +58,7 @@ body {
 }
 
 .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.leaflet-container { background: transparent !important; }
 .header { position: sticky; top: 0; z-index: 20; background: rgba(11, 15, 28, 0.75); backdrop-filter: saturate(120%) blur(6px); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
 [data-theme="light"] .header { background: rgba(248, 250, 252, 0.75); }
 
