@@ -81,6 +81,15 @@
   let map;
   let markers = [];
   let jobs = [];
+  const geocodeCacheKey = 'jj_geocode_cache_v1';
+  let geocodeCache = {};
+
+  try {
+    const raw = localStorage.getItem(geocodeCacheKey);
+    if (raw) geocodeCache = JSON.parse(raw) || {};
+  } catch (e) {
+    geocodeCache = {};
+  }
 
   // Initialize map
   function initMap() {
@@ -111,6 +120,7 @@
       updateJobsList(jobsInView);
     });
 
+    bindLocationSearch();
     loadJobs();
   }
 
@@ -121,22 +131,49 @@
       if (!response.ok) throw new Error('Failed to fetch jobs.json');
       const all = await response.json();
 
-      jobs = (Array.isArray(all) ? all : [])
-        .filter(j => j && j.status === 'approved' && typeof j.latitude === 'number' && typeof j.longitude === 'number')
-        .map(j => ({
-          id: j.id,
-          title: j.title,
-          company: j.company,
-          locationText: j.location || '',
-          latitude: j.latitude,
-          longitude: j.longitude,
-          workMode: j.workMode || '',
-          employmentType: j.employmentType || '',
-          description: j.description || '',
-          applyEmail: j.applyEmail || '',
-          applyUrl: j.applyUrl || '',
-          tags: Array.isArray(j.tags) ? j.tags : []
-        }));
+      const source = Array.isArray(all) ? all : [];
+
+      // Geocode missing coordinates with minimal rate usage and caching
+      const resolved = [];
+      for (const j of source) {
+        if (!j || j.status !== 'approved') continue;
+        let lat = typeof j.latitude === 'number' ? j.latitude : null;
+        let lon = typeof j.longitude === 'number' ? j.longitude : null;
+        const locKey = (j.location || '').trim();
+        if ((!lat || !lon) && locKey) {
+          const cached = geocodeCache[locKey];
+          if (cached && typeof cached.lat === 'number' && typeof cached.lon === 'number') {
+            lat = cached.lat; lon = cached.lon;
+          } else {
+            const geo = await geocodeCity(locKey);
+            if (geo) {
+              lat = geo.lat; lon = geo.lon;
+              geocodeCache[locKey] = { lat, lon, ts: Date.now() };
+              try { localStorage.setItem(geocodeCacheKey, JSON.stringify(geocodeCache)); } catch (e) {}
+            }
+            // Small delay to be polite
+            await new Promise(r => setTimeout(r, 120));
+          }
+        }
+        if (typeof lat === 'number' && typeof lon === 'number') {
+          resolved.push({
+            id: j.id,
+            title: j.title,
+            company: j.company,
+            locationText: j.location || '',
+            latitude: lat,
+            longitude: lon,
+            workMode: j.workMode || '',
+            employmentType: j.employmentType || '',
+            description: j.description || '',
+            applyEmail: j.applyEmail || '',
+            applyUrl: j.applyUrl || '',
+            tags: Array.isArray(j.tags) ? j.tags : []
+          });
+        }
+      }
+
+      jobs = resolved;
 
       addMarkersToMap();
       updateJobsList();
@@ -162,17 +199,17 @@
     markers = [];
 
     jobs.forEach(job => {
-      const icon = L.divIcon({
-        className: 'map-label',
-        html: `<div class="map-label__box"><span class="map-label__title">${escapeHtml(job.title)}</span></div>`,
-        iconSize: [140, 40],
-        iconAnchor: [70, 20]
-      });
-      const marker = L.marker([job.latitude, job.longitude], { icon })
-        .on('click', () => showJobModal(job.id))
-        .addTo(map);
-      marker.jobId = job.id;
-      markers.push(marker);
+      const circle = L.circleMarker([job.latitude, job.longitude], {
+        radius: 8,
+        color: '#3B82F6',
+        weight: 2,
+        fillColor: '#3B82F6',
+        fillOpacity: 0.2
+      }).addTo(map);
+      circle.bindTooltip(escapeHtml(job.title), { permanent: true, direction: 'top', offset: [0, -6], className: 'map-perma-label' });
+      circle.on('click', () => showJobModal(job.id));
+      circle.jobId = job.id;
+      markers.push(circle);
     });
   }
 
@@ -198,6 +235,7 @@
       const matchesSearch = !searchTerm || 
         job.title.toLowerCase().includes(searchTerm) ||
         job.company.toLowerCase().includes(searchTerm) ||
+        (job.locationText && job.locationText.toLowerCase().includes(searchTerm)) ||
         (job.description && job.description.toLowerCase().includes(searchTerm));
 
       const matchesType = !typeFilter || (job.employmentType && job.employmentType.toLowerCase() === typeFilter);
@@ -348,6 +386,40 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  async function geocodeCity(query) {
+    try {
+      const lang = (window.JI18N && window.JI18N.getLang && window.JI18N.getLang()) || 'en';
+      const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=${lang}&format=json`;
+      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      const first = Array.isArray(data.results) ? data.results[0] : null;
+      if (first && typeof first.latitude === 'number' && typeof first.longitude === 'number') {
+        return { lat: first.latitude, lon: first.longitude };
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function bindLocationSearch() {
+    const input = document.getElementById('mapLocationSearch');
+    if (!input) return;
+    let t = null;
+    input.addEventListener('input', () => {
+      const q = input.value.trim();
+      clearTimeout(t);
+      if (q.length < 3) return;
+      t = setTimeout(async () => {
+        const geo = await geocodeCity(q);
+        if (geo && map) {
+          map.setView([geo.lat, geo.lon], 11);
+        }
+      }, 300);
+    });
   }
 
   // Initialize when DOM is ready
