@@ -27,7 +27,7 @@
                         <span class="logo__text">Junicorn Jobs</span>
                     </a>
                 </div>
-                
+
                 <nav class="header__nav">
                     <a href="index.html" class="nav-link">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,7 +75,7 @@
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                         </svg>
                     </button>
-                    
+
                     <div class="language-toggle">
                         <button class="language-toggle__btn" data-lang="en">EN</button>
                         <button class="language-toggle__btn" data-lang="he">עב</button>
@@ -94,7 +94,7 @@
                     <h1 data-i18n="jobs.title">Available Jobs</h1>
                     <p data-i18n="jobs.subtitle">Find your next opportunity in tech</p>
                 </div>
-                
+
                 <!-- Search and Filters -->
                 <div class="jobs-page__filters">
                     <div class="search-box">
@@ -104,7 +104,7 @@
                         </svg>
                         <input type="text" class="search-box__input" placeholder="Search jobs..." id="jobSearch" data-i18n-placeholder="placeholders.searchJobs">
                     </div>
-                    
+
                     <div class="filter-group">
                         <select class="filter-select" id="locationFilter">
                             <option value="" data-i18n="filters.allLocations">All Locations</option>
@@ -113,7 +113,7 @@
                             <option value="jerusalem" data-i18n="filters.jerusalem">Jerusalem</option>
                             <option value="haifa" data-i18n="filters.haifa">Haifa</option>
                         </select>
-                        
+
                         <select class="filter-select" id="typeFilter">
                             <option value="" data-i18n="filters.allTypes">All Types</option>
                             <option value="full-time" data-i18n="filters.fullTime">Full Time</option>
@@ -133,7 +133,7 @@
                         <h3 data-i18n="jobs.listTitle">Job Listings</h3>
                         <span class="jobs-count" id="jobsCount">0 jobs</span>
                     </div>
-                    
+
                     <div class="jobs-list" id="jobsList">
                         <!-- Jobs will be loaded here -->
                         <div class="jobs-list__loading">
@@ -171,7 +171,7 @@
       document.addEventListener('DOMContentLoaded', function() {
         // Initialize i18n
         window.JI18N.init();
-        
+
         // Language toggle
         document.querySelectorAll('.language-toggle__btn').forEach(btn => {
           btn.addEventListener('click', function() {
@@ -179,7 +179,7 @@
             window.JI18N.setLang(lang);
           });
         });
-        
+
         // Initialize language button active state
         const currentLang = window.JI18N.getLang();
         const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
