@@ -352,9 +352,12 @@
   }
 
   function validateJob(payload) {
-    const required = ['title','company','location','workMode','employmentType','description','applyEmail'];
+    const required = ['title','company','workMode','employmentType','description','applyEmail'];
     for (const key of required) {
       if (!payload[key] || String(payload[key]).trim() === '') return `${key} is required`;
+    }
+    if ((typeof payload.latitude !== 'number' || isNaN(payload.latitude)) || (typeof payload.longitude !== 'number' || isNaN(payload.longitude))) {
+      return 'Please select location on the map';
     }
     const emailOk = /.+@.+\..+/.test(payload.applyEmail);
     if (!emailOk) return 'Invalid apply email';
@@ -390,7 +393,7 @@
       
       const latitudeVal = document.getElementById('latitude').value;
       const longitudeVal = document.getElementById('longitude').value;
-      const payload = {
+      let payload = {
         title: document.getElementById('title').value.trim(),
         company: document.getElementById('company').value.trim(),
         location: document.getElementById('location').value.trim(),
@@ -407,6 +410,10 @@
         ownerUid: auth.currentUser.uid,
         ownerEmail: auth.currentUser.email
       };
+
+      if ((!payload.location || !payload.location.trim()) && payload.latitude != null && payload.longitude != null) {
+        payload.location = `${payload.latitude.toFixed(5)}, ${payload.longitude.toFixed(5)}`;
+      }
       
       const err = validateJob(payload);
       if (err) { 
@@ -458,7 +465,7 @@
       
       const latitudeVal = document.getElementById('latitudeManagement').value;
       const longitudeVal = document.getElementById('longitudeManagement').value;
-      const payload = {
+      let payload = {
         title: document.getElementById('titleManagement').value.trim(),
         company: document.getElementById('companyManagement').value.trim(),
         location: document.getElementById('locationManagement').value.trim(),
@@ -475,6 +482,10 @@
         ownerUid: auth.currentUser.uid,
         ownerEmail: auth.currentUser.email
       };
+
+      if ((!payload.location || !payload.location.trim()) && payload.latitude != null && payload.longitude != null) {
+        payload.location = `${payload.latitude.toFixed(5)}, ${payload.longitude.toFixed(5)}`;
+      }
       
       const err = validateJob(payload);
       if (err) { 
