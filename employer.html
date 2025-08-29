@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
@@ -187,6 +188,15 @@
                 <input id="location" class="input" required maxlength="80" placeholder="City, Country or Remote" data-i18n-placeholder="placeholders.location" />
               </label>
               <label>
+                <span data-i18n="jobForm.mapSearch">Search on map</span>
+                <input id="locationSearch" class="input" placeholder="Type a place to search..." />
+              </label>
+              <div class="grid--full" style="height: 280px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;">
+                <div id="locationMap" style="height: 100%; width: 100%;"></div>
+              </div>
+              <input id="latitude" type="hidden" />
+              <input id="longitude" type="hidden" />
+              <label>
                 <span data-i18n="jobForm.workMode">Work Mode *</span>
                 <select id="workMode" class="select" required>
                   <option data-i18n="select.onsite">On-site</option>
@@ -272,13 +282,14 @@
                     <input id="locationManagement" class="input" required maxlength="80" placeholder="City, Country or Remote" data-i18n-placeholder="placeholders.location" />
                   </label>
                   <label>
-                    <span data-i18n="jobForm.latitude">Latitude</span>
-                    <input id="latitudeManagement" type="number" step="any" class="input" placeholder="32.0853" />
+                    <span data-i18n="jobForm.mapSearch">Search on map</span>
+                    <input id="locationSearchManagement" class="input" placeholder="Type a place to search..." />
                   </label>
-                  <label>
-                    <span data-i18n="jobForm.longitude">Longitude</span>
-                    <input id="longitudeManagement" type="number" step="any" class="input" placeholder="34.7818" />
-                  </label>
+                  <div class="grid--full" style="height: 280px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;">
+                    <div id="locationMapManagement" style="height: 100%; width: 100%;"></div>
+                  </div>
+                  <input id="latitudeManagement" type="hidden" />
+                  <input id="longitudeManagement" type="hidden" />
                   <label>
                     <span data-i18n="jobForm.workMode">Work Mode *</span>
                     <select id="workModeManagement" class="select" required>
@@ -371,7 +382,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="assets/i18n.js"></script>
+  <script src="assets/map-picker.js"></script>
   <script src="assets/employer.js"></script>
 </body>
 </html>
