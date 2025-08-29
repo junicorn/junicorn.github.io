@@ -369,9 +369,17 @@
     const form = document.getElementById('jobForm');
     const state = document.getElementById('formState');
     const submitBtn = document.getElementById('submitJob');
+    let pickerInstance = null;
     
     // Store original button text
     submitBtn.setAttribute('data-original-text', submitBtn.textContent);
+
+    // Initialize map picker for simple form
+    setTimeout(() => {
+      if (window.initMapPicker) {
+        pickerInstance = window.initMapPicker('locationMap', 'locationSearch', 'latitude', 'longitude', [32.0853, 34.7818]);
+      }
+    }, 0);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -380,10 +388,14 @@
         return; 
       }
       
+      const latitudeVal = document.getElementById('latitude').value;
+      const longitudeVal = document.getElementById('longitude').value;
       const payload = {
         title: document.getElementById('title').value.trim(),
         company: document.getElementById('company').value.trim(),
         location: document.getElementById('location').value.trim(),
+        latitude: latitudeVal ? parseFloat(latitudeVal) : null,
+        longitude: longitudeVal ? parseFloat(longitudeVal) : null,
         workMode: document.getElementById('workMode').value,
         employmentType: document.getElementById('employmentType').value,
         description: document.getElementById('description').value.trim(),
@@ -425,9 +437,17 @@
     const form = document.getElementById('jobFormManagement');
     const state = document.getElementById('formStateManagement');
     const submitBtn = document.getElementById('submitJobManagement');
+    let pickerInstance = null;
     
     // Store original button text
     submitBtn.setAttribute('data-original-text', submitBtn.textContent);
+
+    // Initialize map picker for management form
+    setTimeout(() => {
+      if (window.initMapPicker) {
+        pickerInstance = window.initMapPicker('locationMapManagement', 'locationSearchManagement', 'latitudeManagement', 'longitudeManagement', [32.0853, 34.7818]);
+      }
+    }, 0);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -436,12 +456,14 @@
         return; 
       }
       
+      const latitudeVal = document.getElementById('latitudeManagement').value;
+      const longitudeVal = document.getElementById('longitudeManagement').value;
       const payload = {
         title: document.getElementById('titleManagement').value.trim(),
         company: document.getElementById('companyManagement').value.trim(),
         location: document.getElementById('locationManagement').value.trim(),
-        latitude: document.getElementById('latitudeManagement').value ? parseFloat(document.getElementById('latitudeManagement').value) : null,
-        longitude: document.getElementById('longitudeManagement').value ? parseFloat(document.getElementById('longitudeManagement').value) : null,
+        latitude: latitudeVal ? parseFloat(latitudeVal) : null,
+        longitude: longitudeVal ? parseFloat(longitudeVal) : null,
         workMode: document.getElementById('workModeManagement').value,
         employmentType: document.getElementById('employmentTypeManagement').value,
         description: document.getElementById('descriptionManagement').value.trim(),
@@ -581,7 +603,7 @@
         </div>
         <div class="employer-job__tags">${(job.tags || []).map(t => `<span class='tag'>${t}</span>`).join('')}</div>
         <div class="employer-job__description">${job.description || ''}</div>
-        ${job.status === 'unavailable' ? `<div class="employer-job__unavailable-notice" data-i18n="jobManagement.unavailableNotice">This position is currently not accepting applications. It will be automatically updated within 24 hours.</div>` : ''}
+        
         <div class="employer-job__stats">
           <span class="employer-job__stat">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -608,21 +630,6 @@
           </span>
         </div>
         <div class="employer-job__actions">
-          ${job.status === 'approved' ? `
-            <button class="employer-job__btn employer-job__btn--unavailable" onclick="markJobUnavailable('${job.id}')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18.364 18.364A9 9 0 1 1 5.636 5.636a9 9 0 0 1 12.728 12.728zM12 8v4m0 4h.01"/>
-              </svg>
-              <span data-i18n="jobManagement.actions.markUnavailable">Mark as Unavailable</span>
-            </button>
-          ` : job.status === 'unavailable' ? `
-            <button class="employer-job__btn employer-job__btn--available" onclick="markJobAvailable('${job.id}')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span data-i18n="jobManagement.actions.markAvailable">Mark as Available</span>
-            </button>
-          ` : ''}
           <button class="employer-job__btn employer-job__btn--delete" onclick="deleteJob('${job.id}')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
@@ -641,80 +648,7 @@
     window.JI18N && window.JI18N.apply();
   }
 
-  // Global functions for job management
-  window.markJobUnavailable = async function(jobId) {
-    if (!confirm(window.JI18N.getLang() === 'he' ? 
-      'האם אתה בטוח שברצונך לסמן משרה זו כלא זמינה?' : 
-      'Are you sure you want to mark this job as unavailable?')) {
-      return;
-    }
-
-    try {
-      // First, get the current job data
-      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
-      const currentJob = jobSnapshot.val();
-      
-      if (!currentJob) {
-        throw new Error('Job not found');
-      }
-      
-      if (currentJob.ownerUid !== auth.currentUser.uid) {
-        throw new Error('Permission denied');
-      }
-
-      // Update with all required fields
-      const updatedJob = {
-        ...currentJob,
-        status: 'unavailable',
-        updatedAt: new Date().toISOString()
-      };
-
-      await database.ref(`jobs/${jobId}`).set(updatedJob);
-      
-      alert(window.JI18N.getLang() === 'he' ? 
-        'הבקשה נשלחה בהצלחה! המשרה תתעדכן תוך 24 שעות.' : 
-        'Request sent successfully! The job will be updated within 24 hours.');
-      
-      loadEmployerJobs();
-    } catch (error) {
-      console.error('Error marking job unavailable:', error);
-      alert('Failed to update job status');
-    }
-  };
-
-  window.markJobAvailable = async function(jobId) {
-    try {
-      // First, get the current job data
-      const jobSnapshot = await database.ref(`jobs/${jobId}`).once('value');
-      const currentJob = jobSnapshot.val();
-      
-      if (!currentJob) {
-        throw new Error('Job not found');
-      }
-      
-      if (currentJob.ownerUid !== auth.currentUser.uid) {
-        throw new Error('Permission denied');
-      }
-
-      // Update with all required fields
-      const updatedJob = {
-        ...currentJob,
-        status: 'approved',
-        updatedAt: new Date().toISOString()
-      };
-
-      await database.ref(`jobs/${jobId}`).set(updatedJob);
-      
-      alert(window.JI18N.getLang() === 'he' ? 
-        'המשרה סומנה כזמינה בהצלחה!' : 
-        'Job marked as available successfully!');
-      
-      loadEmployerJobs();
-    } catch (error) {
-      console.error('Error marking job available:', error);
-      alert('Failed to update job status');
-    }
-  };
+  // Global functions for job management (availability toggles removed by request)
 
   window.deleteJob = async function(jobId) {
     if (!confirm(window.JI18N.getLang() === 'he' ? 
@@ -739,8 +673,8 @@
       await database.ref(`jobs/${jobId}`).remove();
       
       alert(window.JI18N.getLang() === 'he' ? 
-        'המשרה נמחקה בהצלחה!' : 
-        'Job deleted successfully!');
+        'המשרה נמחקה בהצלחה! ייתכן שהשינוי יתעדכן באתר בתוך עד 24 שעות.' : 
+        'Job deleted successfully! Changes may take up to 24 hours to reflect site-wide.');
       
       loadEmployerJobs();
     } catch (error) {
