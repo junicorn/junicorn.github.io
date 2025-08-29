@@ -3,8 +3,8 @@
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   // Theme toggle
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
+  const themeToggle = document.querySelector('.theme-toggle');
+  const themeIcon = document.querySelector('.theme-toggle__icon');
   
   function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -13,6 +13,7 @@
   }
   
   function updateThemeIcon(theme) {
+    if (!themeIcon) return; // בדיקה אם האלמנט קיים
     if (theme === 'light') {
       themeIcon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
     } else {
@@ -28,17 +29,36 @@
     updateThemeIcon(newTheme);
   }
   
-  if (themeToggle) {
+  if (themeToggle && themeIcon) {
     themeToggle.addEventListener('click', toggleTheme);
   }
   
-  initTheme();
+  // Theme will be initialized when DOM is ready
 
-  window.JI18N && window.JI18N.init();
-  const langToggle = document.getElementById('langToggle');
-  if (langToggle) {
-    langToggle.addEventListener('click', () => window.JI18N.toggle());
-    langToggle.textContent = window.JI18N.getLang().toUpperCase();
+  if (window.JI18N) {
+    window.JI18N.init();
+  }
+  
+  // Language toggle
+  const languageButtons = document.querySelectorAll('.language-toggle__btn');
+  if (languageButtons.length > 0 && window.JI18N) {
+    languageButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const lang = this.dataset.lang;
+        window.JI18N.setLang(lang);
+        
+        // Update active state
+        document.querySelectorAll('.language-toggle__btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+    
+    // Set initial active language
+    const currentLang = window.JI18N.getLang();
+    const activeBtn = document.querySelector(`[data-lang="${currentLang}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+    }
   }
 
   // Auth tabs
@@ -101,27 +121,41 @@
     databaseURL: "https://junicornjobs-default-rtdb.firebaseio.com"
   };
 
-  const script = document.createElement('script');
-  script.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js';
-  const scriptAuth = document.createElement('script');
-  scriptAuth.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js';
-  const scriptDatabase = document.createElement('script');
-  scriptDatabase.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js';
-
-  scriptDatabase.onload = initFirebase;
-  document.head.appendChild(script);
-  document.head.appendChild(scriptAuth);
-  document.head.appendChild(scriptDatabase);
-
+  // Initialize Firebase
+  if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    console.error('Firebase not available');
+  }
+  
   let auth, database;
   function initFirebase() {
-    firebase.initializeApp(firebaseConfig);
+    if (typeof firebase === 'undefined') {
+      console.error('Firebase not available');
+      return;
+    }
+    
     auth = firebase.auth();
     database = firebase.database();
     auth.onAuthStateChanged(handleAuthState);
     bindAuthUI();
     bindJobForm();
     bindJobFormManagement();
+  }
+
+  // Initialize Firebase when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        initTheme();
+        initFirebase();
+      }, 100);
+    });
+  } else {
+    setTimeout(() => {
+      initTheme();
+      initFirebase();
+    }, 100);
   }
 
   const authSection = document.getElementById('authSection');
