@@ -1,121 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+
   <defs>
-    <!-- Clean gradient for the brand -->
+    <!-- גראדיינטים משופרים -->
     <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#8b5cf6"/>
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
     </linearGradient>
     
-    <!-- Subtle accent -->
     <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#06b6d4"/>
-      <stop offset="100%" stop-color="#3b82f6"/>
+      <stop offset="0%" stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#2563eb"/>
     </linearGradient>
-  </defs>
-  
-  <!-- Clean background -->
-  <rect width="800" height="400" fill="#ffffff"/>
-  
-  <!-- Main logo container -->
-  <g transform="translate(400, 200)">
-    <!-- Geometric unicorn horn - clean and minimal -->
-    <path d="M0,-35 L10,0 L-10,0 Z" fill="url(#brandGradient)"/>
     
-    <!-- Brand name -->
+    <!-- פילטר אפקט עדין -->
+    <filter id="softGlow" height="300%" width="300%" x="-75%" y="-75%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#4f46e5" result="glowColor"/>
+      <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+      <feBlend in="SourceGraphic" in2="softGlow" mode="screen"/>
+    </filter>
+  </defs>
+
+  <!-- אלמנט מרכזי -->
+  <g transform="translate(400, 200)">
+    <!-- קרן יוניקורן גאומטרית -->
+    <path d="M0,-35 L10,0 L-10,0 Z" fill="url(#brandGradient)" filter="url(#softGlow)"/>
+    
+    <!-- שם המותג -->
     <text x="0" y="40" text-anchor="middle" 
-          font-family="Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif" 
+          font-family="Inter, Segoe UI, system-ui, sans-serif" 
           font-size="42" 
-          font-weight="600" 
-          fill="#1f2937" 
+          font-weight="700" 
+          fill="#1e293b" 
           letter-spacing="-0.025em">
       JuniCorn
     </text>
     
-    <!-- Tagline -->
+    <!-- סלוגן -->
     <text x="0" y="70" text-anchor="middle" 
-          font-family="Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif" 
-          font-size="15" 
-          font-weight="400" 
-          fill="#6b7280">
+          font-family="Arial, Helvetica, sans-serif" 
+          font-size="16" 
+          font-weight="500" 
+          fill="#334155">
       משרות הייטק לג'וניורים
     </text>
   </g>
-  
-  <!-- Minimal decorative elements for balance -->
-  <g opacity="0.4">
-    <!-- Small geometric shapes for visual interest -->
-    <circle cx="150" cy="120" r="3" fill="url(#brandGradient)"/>
-    <circle cx="650" cy="280" r="2" fill="url(#accentGradient)"/>
-    <rect x="680" y="110" width="4" height="4" rx="1" fill="url(#brandGradient)"/>
-    <rect x="110" y="290" width="3" height="3" rx="1" fill="url(#accentGradient)"/>
-  </g>
-  
-  <!-- Live coding animation effect -->
-  <g opacity="0.6">
-    <!-- Code block container -->
-    <rect x="50" y="320" width="200" height="60" rx="4" fill="rgba(15, 23, 42, 0.03)" stroke="rgba(100, 116, 139, 0.2)" stroke-width="1"/>
-    
-    <!-- Animated typing effect -->
+
+  <!-- אנימציית קוד עדינה -->
+  <g opacity="0.7">
+    <!-- קוד בצד שמאל -->
     <text x="60" y="340" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="url(#accentGradient)">
+          font-size="12" font-weight="500" fill="url(#accentGradient)">
       <tspan>const job = {</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0s" fill="freeze"/>
     </text>
     
-    <text x="60" y="355" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="#6b7280">
-      <tspan>  role: 'junior'</tspan>
+    <text x="60" y="360" font-family="JetBrains Mono, Consolas, monospace" 
+          font-size="12" font-weight="400" fill="#475569">
+      <tspan>  level: 'Junior',</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="1s" fill="freeze"/>
     </text>
     
-    <text x="60" y="370" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="url(#accentGradient)">
+    <text x="60" y="380" font-family="JetBrains Mono, Consolas, monospace" 
+          font-size="12" font-weight="400" fill="url(#accentGradient)">
       <tspan>}</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2s" fill="freeze"/>
     </text>
     
-    <!-- Blinking cursor -->
-    <rect x="70" y="372" width="6" height="1" fill="url(#brandGradient)">
-      <animate attributeName="opacity" values="1;0;1" dur="1s" begin="2.5s" repeatCount="indefinite"/>
-    </rect>
-    
-    <!-- Second code block - right side -->
-    <rect x="550" y="40" width="200" height="75" rx="4" fill="rgba(15, 23, 42, 0.03)" stroke="rgba(100, 116, 139, 0.2)" stroke-width="1"/>
-    
+    <!-- קוד בצד ימין -->
     <text x="560" y="60" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="url(#brandGradient)">
+          font-size="12" font-weight="500" fill="url(#brandGradient)">
       <tspan>function findJob() {</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="3s" fill="freeze"/>
     </text>
     
-    <text x="560" y="75" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="#6b7280">
-      <tspan>  return 'success' ✓</tspan>
+    <text x="560" y="80" font-family="JetBrains Mono, Consolas, monospace" 
+          font-size="12" font-weight="400" fill="#475569">
+      <tspan>  return 'Junior Position';</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="4s" fill="freeze"/>
     </text>
     
-    <text x="560" y="90" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="11" font-weight="400" fill="url(#brandGradient)">
+    <text x="560" y="100" font-family="JetBrains Mono, Consolas, monospace" 
+          font-size="12" font-weight="500" fill="url(#brandGradient)">
       <tspan>}</tspan>
       <animate attributeName="opacity" values="0;1" dur="0.5s" begin="4.5s" fill="freeze"/>
     </text>
-    
-    <!-- Animated cursor for second block -->
-    <rect x="570" y="92" width="6" height="1" fill="url(#accentGradient)">
-      <animate attributeName="opacity" values="1;0;1" dur="1s" begin="5s" repeatCount="indefinite"/>
-    </rect>
-    
-    <!-- Restart animation -->
-    <animate attributeName="opacity" values="0.6;0;0.6" dur="0.5s" begin="8s" fill="freeze"/>
   </g>
-  
-  <!-- Minimal decorative dots -->
-  <g opacity="0.3">
-    <circle cx="150" cy="120" r="2" fill="url(#brandGradient)">
-      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="650" cy="280" r="1.5" fill="url(#accentGradient)">
-      <animate attributeName="opacity" values="0.3;0.5;0.3" dur="4s" repeatCount="indefinite"/>
-    </circle>
+
+  <!-- נקודות דקורטיביות עדינות -->
+  <g opacity="0.25">
+    <circle cx="150" cy="120" r="3" fill="url(#brandGradient)"/>
+    <circle cx="650" cy="280" r="3" fill="url(#accentGradient)"/>
+    <circle cx="720" cy="100" r="2" fill="url(#brandGradient)"/>
+    <circle cx="80" cy="300" r="2" fill="url(#accentGradient)"/>
   </g>
 </svg>
