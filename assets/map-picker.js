@@ -26,6 +26,27 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    // Ensure proper rendering when initialized in hidden containers
+    // 1) Invalidate size right after init
+    setTimeout(() => { try { map.invalidateSize(false); } catch (e) {} }, 0);
+    // 2) Invalidate on window resize
+    window.addEventListener('resize', () => {
+      try { map.invalidateSize(false); } catch (e) {}
+    });
+    // 3) Observe visibility changes of the map container and refresh when it becomes visible
+    try {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTimeout(() => { try { map.invalidateSize(false); } catch (e) {} }, 50);
+          }
+        });
+      }, { threshold: 0.1 });
+      io.observe(mapEl);
+    } catch (e) {
+      // IntersectionObserver not available; skip
+    }
+
     let marker = null;
 
     function setMarker(lat, lng) {
