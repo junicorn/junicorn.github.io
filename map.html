@@ -2,9 +2,11 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
+    <script>(function(){try{var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="pageTitle.map">Job Map - Junicorn Jobs</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <link rel="preload" href="data/jobs.json" as="fetch" type="application/json" crossorigin>
     <link rel="stylesheet" href="assets/map-page.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,8 +168,7 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    
     <script src="assets/i18n.js"></script>
     <script src="assets/map-page.js"></script>
     <script>

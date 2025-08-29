@@ -119,35 +119,23 @@
   // Load jobs
   async function loadJobs() {
     try {
-      // Check if Firebase is available
-      if (!firebase || !firebase.firestore) {
-        console.error('Firebase Firestore not available');
-        showError('Firebase not available');
-        return;
-      }
+      const response = await fetch('data/jobs.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Failed to fetch jobs.json');
+      const all = await response.json();
 
-      const jobsRef = firebase.firestore().collection('jobs');
-      const snapshot = await jobsRef.where('status', '==', 'approved').get();
-      
-      jobs = [];
-      snapshot.forEach(doc => {
-        const job = { id: doc.id, ...doc.data() };
-        if (job.location && job.location.lat && job.location.lng) {
-          jobs.push(job);
-        }
-      });
+      jobs = (Array.isArray(all) ? all : [])
+        .filter(j => j && j.status === 'approved' && j.location && typeof j.location.lat === 'number' && typeof j.location.lng === 'number');
 
       addMarkersToMap();
       updateJobsList();
-      
-      // Update jobs count
+
       const countElement = document.getElementById('mapJobsCount');
       if (countElement) {
         countElement.textContent = `${jobs.length} job${jobs.length !== 1 ? 's' : ''}`;
       }
     } catch (error) {
       console.error('Error loading jobs:', error);
-      showError('Failed to load jobs: ' + error.message);
+      showError('Failed to load jobs list');
     }
   }
 
