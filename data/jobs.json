@@ -1,22 +1,5 @@
 [
   {
-    "id": "-OYpCY8s7jwmrkpjknHA",
-    "applyEmail": "test@test.com",
-    "applyUrl": "",
-    "company": "yehe company",
-    "createdAt": "2025-08-29T09:43:46.548Z",
-    "description": "בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה בלה",
-    "employmentType": "משרה מלאה",
-    "latitude": 32.33569,
-    "location": "תל אביב",
-    "longitude": 34.88782,
-    "ownerEmail": "yehudaheller10@gmail.com",
-    "ownerUid": "6zm26krPZJOAKZ54Rg8YvNdP8Gh1",
-    "status": "approved",
-    "title": "בדיקה משרה בדיקה",
-    "workMode": "היברידי"
-  },
-  {
     "id": "job-10",
     "title": "מפתח/ת Backend",
     "company": "CoreTech Solutions",
