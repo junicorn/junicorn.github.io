@@ -184,12 +184,8 @@
                 <input id="company" class="input" required maxlength="100" />
               </label>
               <label>
-                <span data-i18n="jobForm.location">Location *</span>
-                <input id="location" class="input" maxlength="80" placeholder="City will be set from map search" data-i18n-placeholder="placeholders.location" readonly />
-              </label>
-              <label>
-                <span data-i18n="jobForm.mapSearch">Search on map</span>
-                <input id="locationSearch" class="input" placeholder="Type a place to search..." />
+                <span data-i18n="jobForm.mapSearch">Search on map *</span>
+                <input id="locationSearch" class="input" placeholder="Type a place to search..." required />
               </label>
               <div class="grid--full" style="height: 280px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;">
                 <div id="locationMap" style="height: 100%; width: 100%;"></div>
@@ -278,12 +274,8 @@
                     <input id="companyManagement" class="input" required maxlength="100" />
                   </label>
                   <label>
-                    <span data-i18n="jobForm.location">Location *</span>
-                    <input id="locationManagement" class="input" maxlength="80" placeholder="City will be set from map search" data-i18n-placeholder="placeholders.location" readonly />
-                  </label>
-                  <label>
-                    <span data-i18n="jobForm.mapSearch">Search on map</span>
-                    <input id="locationSearchManagement" class="input" placeholder="Type a place to search..." />
+                    <span data-i18n="jobForm.mapSearch">Search on map *</span>
+                    <input id="locationSearchManagement" class="input" placeholder="Type a place to search..." required />
                   </label>
                   <div class="grid--full" style="height: 280px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;">
                     <div id="locationMapManagement" style="height: 100%; width: 100%;"></div>
@@ -388,4 +380,3 @@
   <script src="assets/employer.js"></script>
 </body>
 </html>
-

@@ -76,11 +76,6 @@
           const pos = marker.getLatLng();
           latEl.value = pos.lat.toFixed(6);
           lngEl.value = pos.lng.toFixed(6);
-          // If location text input exists and empty, populate with coordinates
-          const cityInput = document.getElementById(options.cityInputId || 'location') || document.getElementById('locationManagement');
-          if (cityInput && !cityInput.value) {
-            cityInput.value = `${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`;
-          }
           updateOverlayMessage();
         });
       }
