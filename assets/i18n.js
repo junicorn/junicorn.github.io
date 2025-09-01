@@ -32,7 +32,15 @@
       'map.subtitle': 'Find jobs by location',
       'map.jobsInArea': 'Jobs in this area',
       'map.loading': 'Loading jobs...',
-      
+      'map.useMyLocation': 'Use my location',
+      'map.setLocation': 'Set',
+      'map.radiusSelectLabel': 'Radius (km)',
+      'map.radius.5': '5 km',
+      'map.radius.10': '10 km',
+      'map.radius.25': '25 km',
+      'map.radius.50': '50 km',
+      'map.radius.100': '100 km',
+
       // Filters
       'filters.search': 'Search by title, company, tags',
       'filters.allLocations': 'All Locations',
@@ -54,6 +62,7 @@
       
       // Placeholders
       'placeholders.searchJobs': 'Search jobs...',
+      'placeholders.city': 'City name (e.g. Tel Aviv)',
       'placeholders.location': 'City, Country or Remote',
       'placeholders.description': 'What you\'ll do, must-have skills, nice-to-haves',
       'placeholders.applyUrl': 'https://...',
@@ -204,7 +213,15 @@
       'map.subtitle': 'מצא משרות לפי מיקום',
       'map.jobsInArea': 'משרות באזור זה',
       'map.loading': 'טוען משרות...',
-      
+      'map.useMyLocation': 'השתמש במיקום שלי',
+      'map.setLocation': 'קבע',
+      'map.radiusSelectLabel': 'רדיוס (ק"מ)',
+      'map.radius.5': '5 ק"מ',
+      'map.radius.10': '10 ק"מ',
+      'map.radius.25': '25 ק"מ',
+      'map.radius.50': '50 ק"מ',
+      'map.radius.100': '100 ק"מ',
+
       // Filters
       'filters.search': 'חיפוש לפי תפקיד, חברה, תגיות',
       'filters.allLocations': 'כל המיקומים',
@@ -226,6 +243,7 @@
       
       // Placeholders
       'placeholders.searchJobs': 'חיפוש משרות...',
+      'placeholders.city': 'שם עיר (למשל תל אביב)',
       'placeholders.location': 'עיר, מדינה או מרחוק',
       'placeholders.description': 'מה תעשה, חובה לדעת, נעזרות נעימות',
       'placeholders.applyUrl': 'https://...',
@@ -251,12 +269,12 @@
       // Footer
       'footer.postFree': 'פרסם משרה בחינם',
       'footer.browse': 'עיין במשרות',
-      
+
       // Employers
       'employers.title': 'פורטל מעסיקים',
-      'employers.subtitle': 'התחבר ופרסם משרות ידידותיות לג׳וניורים. חינמי ומהיר.',
-      'employers.warningTitle': 'חשוב',
-      'employers.warningBody': 'כל ההגשות נסרקות אוטומטית על ידי AI לספאם, קישורים זדוניים או תוכן מזיק. מפירים עלולים לעמוד בפני הסרה ופעולה משפטית. השירות חינמי לטובת הציבור - אנא פרסם באחריות.',
+      'employers.subtitle': 'התחבר ופרסם משרות לג׳וניורים. בחינם.',
+      'employers.warningTitle': 'שים לב!',
+      'employers.warningBody': 'כל המודעות המוגשות עוברות בדיקה אוטומטית על ידי מערכת AI המיועדת לאיתור וסינון ספאם, קישורים מזיקים ותוכן לא חוקי או פוגעני. מטרתנו היא לשמור על אתר נקי ובטוח לכלל המשתמשים. פרסום תוכן שאינו עומד בהנחיות אלה עלול להוביל להסרתו ואף לנקיטת צעדים משפטיים במקרים חמורים.',
       
       // Auth
       'auth.signInTab': 'התחברות',
@@ -428,4 +446,3 @@
 
   window.JI18N = api;
 })();
-

@@ -63,6 +63,11 @@
   let jobs = [];
   let allJobs = [];
 
+  // User location state (added)
+  let userLocation = null; // { latitude, longitude }
+  let locationMarker = null;
+  let locationCircle = null;
+
   // Initialize map
   function initMap() {
     const mapElement = document.getElementById('map');
@@ -222,6 +227,13 @@
       applyButtons.push(`<a href="${escapeHtml(job.applyUrl)}" target="_blank" rel="noopener" class="popup-btn popup-btn-apply">🔗 הגש מועמדות</a>`);
     }
 
+    // If user location is available, show distance
+    let distanceHtml = '';
+    if (userLocation && typeof job.latitude === 'number' && typeof job.longitude === 'number') {
+      const d = distanceKm(userLocation.latitude, userLocation.longitude, job.latitude, job.longitude);
+      distanceHtml = `<div class="popup-meta-item">📏 כ- ${Math.round(d)} ק"מ</div>`;
+    }
+
     return `
       <div class="job-popup-content">
         <div class="popup-header">
@@ -233,6 +245,7 @@
           <div class="popup-meta-item">📍 ${escapeHtml(job.location)}</div>
           <div class="popup-meta-item">💼 ${escapeHtml(job.employmentType)}</div>
           <div class="popup-meta-item">🏠 ${escapeHtml(job.workMode)}</div>
+          ${distanceHtml}
         </div>
 
         ${tags}
@@ -247,11 +260,66 @@
     `;
   }
 
-  // Filter jobs - שיפור החיפוש
+  // Helper: distance between two coords in kilometers (Haversine)
+  function distanceKm(lat1, lon1, lat2, lon2) {
+    const toRad = v => v * Math.PI / 180;
+    const R = 6371; // km
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
+  // Set user location: adds marker and circle to map
+  function setUserLocation(lat, lng, radiusKm) {
+    userLocation = { latitude: lat, longitude: lng };
+
+    // remove previous
+    if (locationMarker) {
+      map.removeLayer(locationMarker);
+      locationMarker = null;
+    }
+    if (locationCircle) {
+      map.removeLayer(locationCircle);
+      locationCircle = null;
+    }
+
+    locationMarker = L.marker([lat, lng], {
+      title: 'Your location'
+    }).addTo(map);
+
+    locationCircle = L.circle([lat, lng], {
+      radius: (parseFloat(radiusKm) || 25) * 1000,
+      color: '#007bff',
+      fillColor: '#007bff',
+      fillOpacity: 0.08
+    }).addTo(map);
+
+    // zoom to circle
+    try {
+      map.fitBounds(locationCircle.getBounds().pad(0.2));
+    } catch (e) {
+      console.warn('Could not fit bounds to location circle', e);
+    }
+  }
+
+  // Update circle radius when changed
+  function updateUserCircleRadius(radiusKm) {
+    if (!userLocation) return;
+    if (locationCircle) {
+      locationCircle.setRadius(radiusKm * 1000);
+    }
+  }
+
+  // Filter jobs - extended to support radius from userLocation
   function filterJobs() {
     const searchTerm = (document.getElementById('mapSearch')?.value || '').toLowerCase().trim();
     const typeFilter = document.getElementById('mapTypeFilter')?.value || '';
     const workModeFilter = document.getElementById('mapWorkModeFilter')?.value || '';
+    const radiusKm = parseFloat(document.getElementById('mapRadiusSelect')?.value || '25');
 
     jobs = allJobs.filter(job => {
       // חיפוש טקסט
@@ -270,7 +338,17 @@
       // סינון לפי אופן עבודה
       const matchesWorkMode = !workModeFilter || job.workMode.toLowerCase().includes(workModeFilter.toLowerCase());
 
-      return matchesSearch && matchesType && matchesWorkMode;
+      let matchesRadius = true;
+      if (userLocation && typeof job.latitude === 'number' && typeof job.longitude === 'number') {
+        const d = distanceKm(userLocation.latitude, userLocation.longitude, job.latitude, job.longitude);
+        matchesRadius = d <= radiusKm;
+        // attach distance for UI
+        job._distanceKm = d;
+      } else {
+        job._distanceKm = undefined;
+      }
+
+      return matchesSearch && matchesType && matchesWorkMode && matchesRadius;
     });
 
     // עדכן המפה והרשימה
@@ -282,6 +360,9 @@
     if (jobs.length > 0 && markers.length > 0) {
       const group = new L.featureGroup(markers);
       map.fitBounds(group.getBounds().pad(0.1));
+    } else if (userLocation && locationCircle) {
+      // if no job markers but user location exists, zoom to circle
+      try { map.fitBounds(locationCircle.getBounds().pad(0.2)); } catch (e) {}
     }
   }
 
@@ -310,6 +391,7 @@
           <span class="map-job-item__location">📍 ${escapeHtml(job.location)}</span>
           <span class="map-job-item__type">💼 ${escapeHtml(job.employmentType)}</span>
           <span class="map-job-item__work-mode">🏠 ${escapeHtml(job.workMode)}</span>
+          ${job._distanceKm ? `<span class="map-job-item__distance"> • כ- ${Math.round(job._distanceKm)} ק"מ</span>` : ''}
         </div>
         ${job.tags.length > 0 ? `
           <div class="map-job-item__tags">
@@ -474,6 +556,84 @@
     const workModeFilter = document.getElementById('mapWorkModeFilter');
     if (workModeFilter) {
       workModeFilter.addEventListener('change', filterJobs);
+    }
+
+    // Location controls event listeners (added)
+    const useMyLocationBtn = document.getElementById('useMyLocationBtn');
+    const manualLocation = document.getElementById('manualLocation');
+    const setManualLocationBtn = document.getElementById('setManualLocationBtn');
+    const mapRadiusSelect = document.getElementById('mapRadiusSelect');
+
+    if (useMyLocationBtn && navigator.geolocation) {
+      useMyLocationBtn.addEventListener('click', function() {
+        useMyLocationBtn.disabled = true;
+        useMyLocationBtn.textContent = 'Locating...';
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const r = parseFloat(mapRadiusSelect?.value || '25');
+          setUserLocation(lat, lng, r);
+          filterJobs();
+          useMyLocationBtn.disabled = false;
+          useMyLocationBtn.textContent = 'Use my location';
+        }, function(err) {
+          console.warn('Geolocation error', err);
+          alert('Could not retrieve your location');
+          useMyLocationBtn.disabled = false;
+          useMyLocationBtn.textContent = 'Use my location';
+        }, { enableHighAccuracy: true, timeout: 10000 });
+      });
+    }
+
+    if (setManualLocationBtn && manualLocation) {
+      setManualLocationBtn.addEventListener('click', async function() {
+        const val = (manualLocation.value || '').trim();
+        if (!val) {
+          alert(window.JI18N && window.JI18N.getLang() === 'he' ? 'אנא הזן שם עיר' : 'Please enter a city name');
+          return;
+        }
+
+        // UI feedback
+        setManualLocationBtn.disabled = true;
+        const prevText = setManualLocationBtn.textContent;
+        setManualLocationBtn.textContent = window.JI18N && window.JI18N.getLang() === 'he' ? 'מחפש...' : 'Searching...';
+
+        try {
+          // Use Nominatim to geocode the city name (biased to Israel)
+          const query = `${val}, Israel`;
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+          const resp = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+          const data = await resp.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const item = data[0];
+            const lat = parseFloat(item.lat);
+            const lon = parseFloat(item.lon);
+            if (!isNaN(lat) && !isNaN(lon)) {
+              const r = parseFloat(mapRadiusSelect?.value || '25');
+              setUserLocation(lat, lon, r);
+              filterJobs();
+            } else {
+              alert(window.JI18N && window.JI18N.getLang() === 'he' ? 'לא ניתן לאתר את המיקום' : 'Could not find location');
+            }
+          } else {
+            alert(window.JI18N && window.JI18N.getLang() === 'he' ? 'לא נמצא מקום בשם זה' : 'Location not found');
+          }
+        } catch (err) {
+          console.warn('Geocoding error', err);
+          alert(window.JI18N && window.JI18N.getLang() === 'he' ? 'שגיאה בחיפוש מיקום' : 'Error searching location');
+        } finally {
+          setManualLocationBtn.disabled = false;
+          setManualLocationBtn.textContent = prevText;
+        }
+      });
+    }
+
+    if (mapRadiusSelect) {
+      mapRadiusSelect.addEventListener('change', function() {
+        const r = parseFloat(this.value || '25');
+        updateUserCircleRadius(r);
+        filterJobs();
+      });
     }
   }
 

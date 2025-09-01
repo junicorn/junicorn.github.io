@@ -1,25 +1,5 @@
 [
   {
-    "id": "-OYppXgDSWDPFhl_hU9P",
-    "applyEmail": "test@test.com",
-    "applyUrl": "https://junicorn.github.io/employer.html",
-    "company": "hellersoft",
-    "createdAt": "2025-08-29T12:38:30.412Z",
-    "description": "בלה בלה",
-    "employmentType": "התמחות",
-    "latitude": 31.22417,
-    "location": "נבטים",
-    "longitude": 34.88098,
-    "ownerEmail": "yehudaheller10@gmail.com",
-    "ownerUid": "6zm26krPZJOAKZ54Rg8YvNdP8Gh1",
-    "status": "approved",
-    "tags": [
-      "too"
-    ],
-    "title": "מפתח בשפת TOO",
-    "workMode": "במשרד"
-  },
-  {
     "id": "1",
     "applyEmail": "",
     "applyUrl": "https://www.glassdoor.com/Job/israel-internship-jobs-SRCH_IL.0%2C6_IN119_KO7%2C17.htm",
@@ -33,11 +13,7 @@
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "QA",
-      "internship",
-      "student"
-    ],
+    "tags": ["QA", "internship", "student"],
     "title": "QA Intern",
     "workMode": "במשרד"
   },
@@ -55,11 +31,7 @@
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "software",
-      "algorithm",
-      "intern"
-    ],
+    "tags": ["software", "algorithm", "intern"],
     "title": "Engineering Intern – SW-ALGO",
     "workMode": "במשרד"
   },
@@ -71,17 +43,13 @@
     "createdAt": "2025-08-29T00:00:00.000Z",
     "description": "מאבטח/ת בבאר שבע—עבודה במשמרות, שכר 46.5 ש\"ח לשעה. מתאים לסטודנטים.",
     "employmentType": "חלקית",
-    "latitude": 31.252,
+    "latitude": 31.2520,
     "location": "באר שבע",
     "longitude": 34.7915,
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "security",
-      "student",
-      "part-time"
-    ],
+    "tags": ["security", "student", "part-time"],
     "title": "מאבטח/ת (סטודנט/ית)",
     "workMode": "במשרד"
   },
@@ -99,11 +67,7 @@
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "student",
-      "government",
-      "shifts"
-    ],
+    "tags": ["student", "government", "shifts"],
     "title": "עבודה במוסד ממשלתי – סטודנט/ית",
     "workMode": "במשרד"
   },
@@ -121,11 +85,7 @@
     "ownerEmail": "allwhatyouneed2024@gmail.com",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "customer service",
-      "remote",
-      "student"
-    ],
+    "tags": ["customer service", "remote", "student"],
     "title": "נציג/ה שירות לקוחות (בעיקר בהודעות)",
     "workMode": "מרחוק/היברידי"
   },
@@ -143,12 +103,7 @@
     "ownerEmail": "allwhatyouneed2024@gmail.com",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "collections",
-      "customer service",
-      "remote",
-      "student"
-    ],
+    "tags": ["collections", "customer service", "remote", "student"],
     "title": "נציג/ה גבייה (אנגלית, היברידי)",
     "workMode": "מרחוק/היברידי"
   },
@@ -160,18 +115,13 @@
     "createdAt": "2025-08-29T00:00:00.000Z",
     "description": "מטמיע/ת מערכות מידע – משרה חלקית (20 שעות בשבוע), עבודה בהדרכה והטמעה, מתאים לסטודנטים בחיפה וגליל מערבי.",
     "employmentType": "חלקית",
-    "latitude": 32.794,
+    "latitude": 32.7940,
     "location": "חיפה",
     "longitude": 34.9896,
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "IT",
-      "systems",
-      "intern",
-      "student"
-    ],
+    "tags": ["IT", "systems", "intern", "student"],
     "title": "מטמיע/ה מערכות מידע (סטודנט)",
     "workMode": "במשרד"
   },
@@ -189,11 +139,7 @@
     "ownerEmail": "",
     "ownerUid": "",
     "status": "approved",
-    "tags": [
-      "NOC",
-      "tech support",
-      "student"
-    ],
+    "tags": ["NOC", "tech support", "student"],
     "title": "מפעיל/ת NOC (סטודנט)",
     "workMode": "במשרד"
   }

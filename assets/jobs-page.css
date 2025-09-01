@@ -97,6 +97,14 @@
     min-height: 600px;
 }
 
+/* Advertisment slot inside the jobs layout should span both columns so it doesn't break the grid */
+.ad-slot {
+    grid-column: 1 / -1;
+    margin: 16px auto;
+    max-width: 728px;
+    text-align: center;
+}
+
 /* Sidebar */
 .jobs-sidebar {
     background: var(--panel);

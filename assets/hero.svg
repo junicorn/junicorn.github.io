@@ -4,14 +4,20 @@
     <!-- גראדיינטים משופרים -->
     <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#4f46e5"/>
-      <stop offset="100%" stop-color="#7c3aed"/>
+      <stop offset="60%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
     
     <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#0891b2"/>
       <stop offset="100%" stop-color="#2563eb"/>
     </linearGradient>
-    
+
+    <radialGradient id="maneGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9"/>
+    </radialGradient>
+
     <!-- פילטר אפקט עדין -->
     <filter id="softGlow" height="300%" width="300%" x="-75%" y="-75%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
@@ -19,78 +25,195 @@
       <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
       <feBlend in="SourceGraphic" in2="softGlow" mode="screen"/>
     </filter>
+
+    <!-- טקסט דרופ-שדואו עדין -->
+    <filter id="textShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="2" in="SourceAlpha" result="off"/>
+      <feGaussianBlur in="off" stdDeviation="3" result="blur"/>
+      <feBlend in="SourceGraphic" in2="blur" mode="normal"/>
+    </filter>
+
+    <style type="text/css"><![CDATA[
+      .brand { font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial; font-weight:700; font-size:42px; letter-spacing:-0.02em }
+      .tag   { font-family: Arial, Helvetica, sans-serif; font-size:15px; font-weight:500 }
+      .code  { font-family: 'JetBrains Mono', Consolas, monospace; font-size:12px }
+    ]]></style>
   </defs>
 
   <!-- אלמנט מרכזי -->
   <g transform="translate(400, 200)">
-    <!-- קרן יוניקורן גאומטרית -->
-    <path d="M0,-35 L10,0 L-10,0 Z" fill="url(#brandGradient)" filter="url(#softGlow)"/>
-    
+    <!-- משמר רקע שקוף: אין rect -->
+
+    <!-- סימל יוניקורן מעודן -->
+    <g transform="translate(-140,-30)">
+      <!-- קרן -->
+      <path d="M0,-44 L9,-4 L-9,-4 Z" fill="url(#brandGradient)" filter="url(#softGlow)"/>
+      <!-- ראש -->
+      <circle cx="0" cy="-2" r="28" fill="#ffffff" opacity="0.02" stroke="url(#brandGradient)" stroke-width="2"/>
+      <!-- שיער (מנעד צבעים) -->
+      <path d="M-8,-20 C-28,-10 -30,6 -12,18 C-2,24 12,22 22,12" fill="none" stroke="url(#maneGradient)" stroke-width="6" stroke-linecap="round"/>
+    </g>
+
     <!-- שם המותג -->
-    <text x="0" y="40" text-anchor="middle" 
-          font-family="Inter, Segoe UI, system-ui, sans-serif" 
-          font-size="42" 
-          font-weight="700" 
-          fill="#1e293b" 
-          letter-spacing="-0.025em">
-      JuniCorn
+    <text x="0" y="40" text-anchor="middle" class="brand" filter="url(#textShadow)">
+      <!-- Typewriter brand: each character animates, looped with the same 9s cycle as code -->
+      <tspan opacity="0" fill="url(#brandGradient)">J<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">u<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.06s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.12s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.18s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">C<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.24s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.30s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">r<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.36s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0" fill="url(#brandGradient)">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.42s" repeatCount="indefinite" fill="remove"/></tspan>
+      <!-- brand caret -->
+      <tspan fill="url(#brandGradient)">|<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="0.52s" repeatCount="indefinite"/></tspan>
     </text>
     
     <!-- סלוגן -->
-    <text x="0" y="70" text-anchor="middle" 
-          font-family="Arial, Helvetica, sans-serif" 
-          font-size="16" 
-          font-weight="500" 
-          fill="#334155">
+    <text x="0" y="72" text-anchor="middle" class="tag" fill="rgba(51,65,85,0.9)">
       משרות הייטק לג'וניורים
     </text>
   </g>
 
-  <!-- אנימציית קוד עדינה -->
-  <g opacity="0.7">
-    <!-- קוד בצד שמאל -->
-    <text x="60" y="340" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="500" fill="url(#accentGradient)">
-      <tspan>const job = {</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0s" fill="freeze"/>
+  <!-- Typewriter-style code animation (looping) -->
+  <g opacity="0.85">
+    <!-- Left column (typewriter) -->
+    <text x="60" y="330" class="code" font-weight="500" fill="url(#accentGradient)">
+      <!-- line 1: "const job = {" (13 chars) -->
+      <tspan opacity="0">c<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.06s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.12s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">s<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.18s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">t<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.24s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.30s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">j<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.36s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.42s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">b<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.48s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.54s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">=<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.60s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.66s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">{<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="0.72s" repeatCount="indefinite" fill="remove"/></tspan>
+      <!-- caret for line 1: starts blinking after line finishes, repeats each cycle -->
+      <tspan fill="url(#accentGradient)">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="0.82s" repeatCount="indefinite"/>
+      </tspan>
     </text>
-    
-    <text x="60" y="360" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="400" fill="#475569">
-      <tspan>  level: 'Junior',</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="1s" fill="freeze"/>
+
+    <text x="60" y="350" class="code" font-weight="400" fill="#64748b">
+      <!-- line 2: "  level: 'Junior'," (18 chars) starts after a short pause (1.00s) -->
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.00s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.06s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">l<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.12s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">e<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.18s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">v<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.24s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">e<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.30s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">l<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.36s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">:<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.42s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.48s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.54s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">J<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.60s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">u<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.66s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.72s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.78s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.84s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">r<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.90s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="1.96s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">,<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="2.02s" repeatCount="indefinite" fill="remove"/></tspan>
+      <!-- caret for line 2 -->
+      <tspan fill="#64748b">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="2.12s" repeatCount="indefinite"/>
+      </tspan>
     </text>
-    
-    <text x="60" y="380" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="400" fill="url(#accentGradient)">
-      <tspan>}</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2s" fill="freeze"/>
+
+    <text x="60" y="370" class="code" font-weight="400" fill="url(#accentGradient)">
+      <!-- line 3: closing brace '}' starts after line2 finishes -->
+      <tspan opacity="0">}<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="2.28s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan fill="url(#accentGradient)">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="2.40s" repeatCount="indefinite"/>
+      </tspan>
     </text>
-    
-    <!-- קוד בצד ימין -->
-    <text x="560" y="60" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="500" fill="url(#brandGradient)">
-      <tspan>function findJob() {</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="3s" fill="freeze"/>
+
+    <!-- Right column (typewriter) -->
+    <text x="560" y="60" class="code" font-weight="500" fill="url(#brandGradient)">
+      <!-- line 4: "function findJob() {" (20 chars) starts at 3.00s -->
+      <tspan opacity="0">f<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.00s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">u<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.06s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.12s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">c<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.18s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">t<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.24s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.30s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.36s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.42s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.48s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">f<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.54s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.60s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.66s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">d<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.72s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">J<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.78s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.84s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">b<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.90s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">(<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="3.96s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">)<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.02s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.08s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">{<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.14s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan fill="url(#brandGradient)">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="4.26s" repeatCount="indefinite"/>
+      </tspan>
     </text>
-    
-    <text x="560" y="80" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="400" fill="#475569">
-      <tspan>  return 'Junior Position';</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="4s" fill="freeze"/>
+
+    <text x="560" y="80" class="code" font-weight="400" fill="#64748b">
+      <!-- line 5: "  return 'Junior Position';" starts at 4.80s -->
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.80s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.86s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">r<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.92s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">e<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="4.98s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">t<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.04s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">u<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.10s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">r<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.16s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.22s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">:<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.28s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.34s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.40s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">J<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.46s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">u<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.52s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.58s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.64s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.70s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">r<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.76s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0"> <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.82s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">P<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.88s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="5.94s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">s<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.00s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.06s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">t<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.12s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">i<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.18s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">o<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.24s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">n<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.30s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.36s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan opacity="0">;<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.42s" repeatCount="indefinite" fill="remove"/></tspan>
+      <!-- caret for line 5 -->
+      <tspan fill="#64748b">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="6.54s" repeatCount="indefinite"/>
+      </tspan>
     </text>
-    
-    <text x="560" y="100" font-family="JetBrains Mono, Consolas, monospace" 
-          font-size="12" font-weight="500" fill="url(#brandGradient)">
-      <tspan>}</tspan>
-      <animate attributeName="opacity" values="0;1" dur="0.5s" begin="4.5s" fill="freeze"/>
+
+    <text x="560" y="100" class="code" font-weight="500" fill="url(#brandGradient)">
+      <!-- line 6: closing brace for function -->
+      <tspan opacity="0">}<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.03;0.88;1" dur="9s" begin="6.90s" repeatCount="indefinite" fill="remove"/></tspan>
+      <tspan fill="url(#brandGradient)">
+        |<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.02;0.9;1" dur="9s" begin="7.00s" repeatCount="indefinite"/>
+      </tspan>
     </text>
   </g>
 
-  <!-- נקודות דקורטיביות עדינות -->
-  <g opacity="0.25">
-    <circle cx="150" cy="120" r="3" fill="url(#brandGradient)"/>
-    <circle cx="650" cy="280" r="3" fill="url(#accentGradient)"/>
+  <!-- נקודות דקורטיביות עדינות עם אנימציה קטנה -->
+  <g opacity="0.28">
+    <circle cx="150" cy="120" r="3" fill="url(#brandGradient)">
+      <animate attributeName="r" values="2;4;2" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="650" cy="280" r="3" fill="url(#accentGradient)">
+      <animate attributeName="r" values="2;4;2" dur="5.5s" repeatCount="indefinite"/>
+    </circle>
     <circle cx="720" cy="100" r="2" fill="url(#brandGradient)"/>
     <circle cx="80" cy="300" r="2" fill="url(#accentGradient)"/>
   </g>
