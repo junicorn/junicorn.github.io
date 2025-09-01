@@ -89,6 +89,20 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    // Ensure Leaflet recalculates size after layout/ad changes
+    map.whenReady(function() {
+      setTimeout(function() {
+        try { map.invalidateSize(); } catch(e) {}
+      }, 200);
+    });
+
+    // Recalculate when window resized
+    window.addEventListener('resize', function() {
+      if (map) {
+        try { map.invalidateSize(); } catch(e) {}
+      }
+    });
+
     loadJobs();
   }
 
@@ -167,7 +181,11 @@
         // מרכז המפה על המשרות
         const group = new L.featureGroup(markers);
         if (markers.length > 0) {
-          map.fitBounds(group.getBounds().pad(0.1));
+          // Invalidate size first in case container dimensions changed (ads loaded)
+          setTimeout(function() {
+            try { map.invalidateSize(); } catch(e) {}
+            try { map.fitBounds(group.getBounds().pad(0.1)); } catch(e) {}
+          }, 150);
         }
       } else {
         showError('לא נמצאו משרות עם קואורדינטות תקינות');
@@ -300,7 +318,10 @@
 
     // zoom to circle
     try {
-      map.fitBounds(locationCircle.getBounds().pad(0.2));
+      setTimeout(function() {
+        map.invalidateSize();
+        map.fitBounds(locationCircle.getBounds().pad(0.2));
+      }, 150);
     } catch (e) {
       console.warn('Could not fit bounds to location circle', e);
     }
@@ -359,10 +380,14 @@
     // התאם את המפה למשרות המסוננות
     if (jobs.length > 0 && markers.length > 0) {
       const group = new L.featureGroup(markers);
-      map.fitBounds(group.getBounds().pad(0.1));
+      // make sure size is correct before fitting bounds
+      setTimeout(function() {
+        try { map.invalidateSize(); } catch(e) {}
+        try { map.fitBounds(group.getBounds().pad(0.1)); } catch(e) {}
+      }, 150);
     } else if (userLocation && locationCircle) {
       // if no job markers but user location exists, zoom to circle
-      try { map.fitBounds(locationCircle.getBounds().pad(0.2)); } catch (e) {}
+      try { setTimeout(function() { map.invalidateSize(); try { map.fitBounds(locationCircle.getBounds().pad(0.2)); } catch(e) {} }, 150); } catch (e) {}
     }
   }
 

@@ -93,12 +93,38 @@
 .map-container {
     display: grid;
     grid-template-columns: 1fr 400px;
+    grid-template-rows: auto 1fr; /* top row for ad/controls, bottom row for map + sidebar */
     gap: 2rem;
-    height: 600px;
+    min-height: 600px; /* allow extra space when ad is present */
     border-radius: 16px;
     overflow: hidden;
     background: var(--panel);
     box-shadow: var(--shadow);
+}
+
+/* Advertisment slot for map page: span full width above the map */
+.ad-slot {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    background: transparent;
+}
+
+/* Ensure map and sidebar occupy the second row explicitly so the ad does not push columns out of place */
+.map {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    min-height: 400px; /* ensures map has visible area even before tiles load */
+    height: 100%;
+    width: 100%;
+}
+
+.map-sidebar {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
 }
 
 /* Map */
@@ -693,6 +719,11 @@
 
     .popup-actions {
         flex-direction: column;
+    }
+
+    /* Hide large ad slot on narrow screens to avoid layout issues */
+    .ad-slot {
+        display: none;
     }
 }
 
